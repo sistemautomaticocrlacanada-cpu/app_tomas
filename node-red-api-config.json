@@ -1,0 +1,173 @@
+[
+    {
+        "id": "api-sector-get",
+        "type": "http in",
+        "z": "main-flow",
+        "name": "GET /api/sector/:id/:valve",
+        "url": "/api/sector/:id/:valve",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 100,
+        "wires": [["validate-sector-token"]]
+    },
+    {
+        "id": "validate-sector-token",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Validar Token Sector",
+        "func": "// Configuración de usuarios por sectores (copiar de usuarios-sectores-config.js)\nconst USUARIOS_SECTORES_CONFIG = {\n    '001': { sector: 2, valve: 'A', name: 'Juan Pérez González', token: 's2a_abc123_2024' },\n    '002': { sector: 2, valve: 'B', name: 'María García López', token: 's2b_def456_2024' },\n    '003': { sector: 3, valve: 'A', name: 'Carlos López Martín', token: 's3a_ghi789_2024' },\n    // ... resto de usuarios (copiar configuración completa)\n};\n\n// Función para obtener el label del sector\nfunction getSectorLabel(sectorNum) {\n    const SECTOR_TO_HIDRANTE = {\n        1: 1, 16: 2, 25: 3, 38: 4, 48: 5, 60: 6, 75: 7, 86: 8, 97: 9, 118: 10, 141: 11, 147: 12, 154: 13, 168: 14\n    };\n\n    if (SECTOR_TO_HIDRANTE[sectorNum]) {\n        return `Hidrante ${SECTOR_TO_HIDRANTE[sectorNum]}`;\n    }\n    \n    const H2_SECTORS = [13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24];\n    if (H2_SECTORS.includes(sectorNum)) {\n        return `H2 ${String(sectorNum).padStart(3,'0')}`;\n    }\n    \n    const H3_SECTORS = [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37];\n    if (H3_SECTORS.includes(sectorNum)) {\n        return `H3 ${String(sectorNum).padStart(3,'0')}`;\n    }\n    \n    const H4_SECTORS = [39, 40, 41, 42, 43, 44, 45, 46, 47];\n    if (H4_SECTORS.includes(sectorNum)) {\n        return `H4 ${String(sectorNum).padStart(3,'0')}`;\n    }\n    \n    const H5_SECTORS = [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];\n    if (H5_SECTORS.includes(sectorNum)) {\n        return `H5 ${String(sectorNum).padStart(3,'0')}`;\n    }\n    \n    return `H1 ${String(sectorNum).padStart(3,'0')}`;\n}\n\n// Obtener parámetros\nconst sectorId = parseInt(msg.req.params.id);\nconst valve = msg.req.params.valve.toUpperCase();\nconst authHeader = msg.req.headers.authorization;\n\nif (!authHeader || !authHeader.startsWith('Bearer ')) {\n    msg.statusCode = 401;\n    msg.payload = { error: 'Token requerido' };\n    return [null, msg];\n}\n\nconst token = authHeader.substring(7);\n\n// Validar token y acceso específico al sector y válvula\nlet usuarioValido = null;\nfor (const [userId, config] of Object.entries(USUARIOS_SECTORES_CONFIG)) {\n    if (config.token === token && config.sector === sectorId && config.valve === valve) {\n        usuarioValido = { userId, ...config };\n        break;\n    }\n}\n\nif (!usuarioValido) {\n    msg.statusCode = 403;\n    msg.payload = { error: 'Acceso denegado al sector/válvula solicitado' };\n    return [null, msg];\n}\n\n// Token válido, continuar\nmsg.sectorId = sectorId;\nmsg.valve = valve;\nmsg.usuario = usuarioValido;\nmsg.sectorLabel = getSectorLabel(sectorId);\nreturn [msg, null];",
+        "outputs": 2,
+        "x": 400,
+        "y": 100,
+        "wires": [["get-sector-data"], ["http-response-error"]]
+    },
+    {
+        "id": "get-sector-data",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Obtener Datos Sector",
+        "func": "// Aquí conectas con tu sistema actual de sectores\n// Usando los arrays FLOWS, TOTALS, etc. del HTML original\n\nconst sectorId = msg.sectorId;\nconst valve = msg.valve;\nconst sectorLabel = msg.sectorLabel;\n\n// Obtener datos del contexto global (ajustar según tu implementación)\nconst flows = global.get('FLOWS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\nconst totals = global.get('TOTALS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\nconst dailys = global.get('DAILYS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\nconst status = global.get('STATUS') || { A: new Array(180).fill(false), B: new Array(180).fill(false) };\nconst modes = global.get('MODES') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\n\nconst index = sectorId - 1;\n\n// Verificar que el índice sea válido\nif (index < 0 || index >= 180) {\n    msg.statusCode = 404;\n    msg.payload = { error: 'Sector no encontrado' };\n    return msg;\n}\n\n// Formatear respuesta para el sector y válvula específicos\nmsg.payload = {\n    sector: sectorId,\n    valve: valve,\n    sectorLabel: sectorLabel,\n    data: {\n        flow: flows[valve][index] || 0,\n        total: totals[valve][index] || 0,\n        daily: dailys[valve][index] || 0,\n        status: status[valve][index] || false,\n        mode: modes[valve][index] || 0\n    },\n    lastUpdate: new Date().toISOString(),\n    usuario: msg.usuario.name\n};\n\nmsg.statusCode = 200;\nreturn msg;",
+        "x": 600,
+        "y": 100,
+        "wires": [["http-response-success"]]
+    },
+    {
+        "id": "api-sector-command",
+        "type": "http in",
+        "z": "main-flow",
+        "name": "POST /api/sector/:id/:valve/command",
+        "url": "/api/sector/:id/:valve/command",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 200,
+        "wires": [["validate-sector-command-token"]]
+    },
+    {
+        "id": "validate-sector-command-token",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Validar Token Comando Sector",
+        "func": "// Misma configuración y validación que antes\nconst USUARIOS_SECTORES_CONFIG = {\n    '001': { sector: 2, valve: 'A', name: 'Juan Pérez González', token: 's2a_abc123_2024' },\n    '002': { sector: 2, valve: 'B', name: 'María García López', token: 's2b_def456_2024' },\n    '003': { sector: 3, valve: 'A', name: 'Carlos López Martín', token: 's3a_ghi789_2024' },\n    // ... resto de usuarios\n};\n\nconst sectorId = parseInt(msg.req.params.id);\nconst valve = msg.req.params.valve.toUpperCase();\nconst authHeader = msg.req.headers.authorization;\n\nif (!authHeader || !authHeader.startsWith('Bearer ')) {\n    msg.statusCode = 401;\n    msg.payload = { error: 'Token requerido' };\n    return [null, msg];\n}\n\nconst token = authHeader.substring(7);\n\n// Validar token y acceso específico\nlet usuarioValido = null;\nfor (const [userId, config] of Object.entries(USUARIOS_SECTORES_CONFIG)) {\n    if (config.token === token && config.sector === sectorId && config.valve === valve) {\n        usuarioValido = { userId, ...config };\n        break;\n    }\n}\n\nif (!usuarioValido) {\n    msg.statusCode = 403;\n    msg.payload = { error: 'Acceso denegado al sector/válvula solicitado' };\n    return [null, msg];\n}\n\nmsg.sectorId = sectorId;\nmsg.valve = valve;\nmsg.usuario = usuarioValido;\nmsg.command = msg.payload;\nreturn [msg, null];",
+        "outputs": 2,
+        "x": 450,
+        "y": 200,
+        "wires": [["process-sector-command"], ["http-response-error"]]
+    },
+    {
+        "id": "process-sector-command",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Procesar Comando Sector",
+        "func": "// Procesar comandos específicos para sector y válvula\nconst { action, confirm } = msg.command;\nconst sectorId = msg.sectorId;\nconst valve = msg.valve;\n\nif (action === 'reset_daily') {\n    // Enviar comando de reset diario al sistema principal\n    msg.topic = 'reset_daily';\n    msg.payload = {\n        sector: sectorId,\n        valve: valve\n    };\n    \n} else if (action === 'reset_total' && confirm) {\n    // Enviar comando de reset total al sistema principal\n    msg.topic = 'reset_total';\n    msg.payload = {\n        sector: sectorId,\n        valve: valve,\n        confirm: true\n    };\n    \n} else {\n    msg.statusCode = 400;\n    msg.payload = { error: 'Comando no válido o falta confirmación' };\n    return [null, msg];\n}\n\n// Respuesta exitosa\nmsg.statusCode = 200;\nmsg.responsePayload = { \n    success: true, \n    message: `Comando ${action} ejecutado`,\n    sector: sectorId,\n    valve: valve,\n    usuario: msg.usuario.name\n};\n\nreturn [msg, null];",
+        "outputs": 2,
+        "x": 650,
+        "y": 200,
+        "wires": [["send-to-system", "command-response"], ["http-response-error"]]
+    },
+    {
+        "id": "send-to-system",
+        "type": "link out",
+        "z": "main-flow",
+        "name": "Enviar a Sistema Principal",
+        "links": ["main-system-input"],
+        "x": 850,
+        "y": 180
+    },
+    {
+        "id": "command-response",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Respuesta Comando",
+        "func": "msg.payload = msg.responsePayload;\nreturn msg;",
+        "x": 850,
+        "y": 220,
+        "wires": [["http-response-success"]]
+    },
+    {
+        "id": "http-response-success",
+        "type": "http response",
+        "z": "main-flow",
+        "name": "Respuesta OK",
+        "statusCode": "",
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Content-Type": "application/json"
+        },
+        "x": 1050,
+        "y": 150
+    },
+    {
+        "id": "http-response-error",
+        "type": "http response",
+        "z": "main-flow",
+        "name": "Respuesta Error",
+        "statusCode": "",
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Content-Type": "application/json"
+        },
+        "x": 1050,
+        "y": 250
+    },
+    {
+        "id": "cors-options-sector",
+        "type": "http in",
+        "z": "main-flow",
+        "name": "OPTIONS /api/sector/*",
+        "url": "/api/sector/*",
+        "method": "options",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 300,
+        "wires": [["cors-response"]]
+    },
+    {
+        "id": "cors-response",
+        "type": "function",
+        "z": "main-flow",
+        "name": "CORS Response",
+        "func": "msg.statusCode = 200;\nmsg.payload = '';\nreturn msg;",
+        "x": 400,
+        "y": 300,
+        "wires": [["http-response-success"]]
+    },
+    {
+        "id": "main-system-input",
+        "type": "link in",
+        "z": "main-flow",
+        "name": "Entrada Sistema Principal",
+        "links": ["send-to-system"],
+        "x": 100,
+        "y": 400,
+        "wires": [["process-system-command"]]
+    },
+    {
+        "id": "process-system-command",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Procesar en Sistema Principal",
+        "func": "// Aquí conectas con tu sistema principal de sectores\n// Este nodo debe integrarse con tu lógica existente\n\nconst { sector, valve } = msg.payload;\nconst action = msg.topic;\n\n// Ejemplo de integración con tu sistema actual:\nif (action === 'reset_daily') {\n    // Llamar a tu función cnt2_resetDaily equivalente\n    // Actualizar el array DAILYS\n    const dailys = global.get('DAILYS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\n    const index = sector - 1;\n    if (index >= 0 && index < 180) {\n        dailys[valve][index] = 0;\n        global.set('DAILYS', dailys);\n        \n        // Enviar actualización a todos los clientes conectados\n        msg.payload = {\n            type: 'counter_update',\n            sector: sector,\n            valve: valve,\n            daily: 0,\n            timestamp: new Date().toISOString()\n        };\n        \n        return msg;\n    }\n} else if (action === 'reset_total') {\n    // Llamar a tu función cnt2_resetTotal equivalente\n    const totals = global.get('TOTALS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\n    const dailys = global.get('DAILYS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\n    const starts = global.get('STARTS') || { A: new Array(180).fill(0), B: new Array(180).fill(0) };\n    \n    const index = sector - 1;\n    if (index >= 0 && index < 180) {\n        totals[valve][index] = 0;\n        dailys[valve][index] = 0;\n        starts[valve][index] = 0;\n        \n        global.set('TOTALS', totals);\n        global.set('DAILYS', dailys);\n        global.set('STARTS', starts);\n        \n        msg.payload = {\n            type: 'counter_update',\n            sector: sector,\n            valve: valve,\n            total: 0,\n            daily: 0,\n            start: 0,\n            timestamp: new Date().toISOString()\n        };\n        \n        return msg;\n    }\n}\n\nreturn null;",
+        "x": 300,
+        "y": 400,
+        "wires": [["broadcast-update"]]
+    },
+    {
+        "id": "broadcast-update",
+        "type": "function",
+        "z": "main-flow",
+        "name": "Difundir Actualización",
+        "func": "// Opcional: Difundir la actualización a todos los clientes conectados\n// Esto podría ser útil si tienes múltiples usuarios viendo el mismo sector\n\nif (msg.payload && msg.payload.type === 'counter_update') {\n    // Enviar a WebSocket o Server-Sent Events si los tienes configurados\n    // Por ahora, simplemente logear la actualización\n    node.log(`Actualización enviada: Sector ${msg.payload.sector} Válvula ${msg.payload.valve}`);\n}\n\nreturn msg;",
+        "x": 500,
+        "y": 400,
+        "wires": [[]]
+    }
+]

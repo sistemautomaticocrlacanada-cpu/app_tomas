@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - Todos los Sectores</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 10px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .admin-badge {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .sector-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .sector-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.2);
+        }
+        .sector-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #00D4FF;
+        }
+        .valve-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        .valve-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FF3B30;
+        }
+        .status-dot.active { background: #32D74B; }
+        .valve-data {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .controls {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .btn-small {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #FF6B35;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="admin-badge">👑 ADMINISTRADOR</div>
+        <h1>Panel de Control - Todos los Sectores</h1>
+        <p>Vista completa del sistema</p>
+        <div style="margin-top: 15px;">
+            <button onclick="window.location.href='admin-panel.html'" style="background: #FF6B35; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                🛠️ Panel de Administración Completo
+            </button>
+        </div>
+    </div>
+
+    <div id="loading" class="loading">
+        <div>🔄 Cargando todos los sectores...</div>
+    </div>
+
+    <div id="sectors-grid" class="grid" style="display: none;"></div>
+
+    <button class="refresh-btn" onclick="loadAllSectors()">🔄</button>
+
+    <script src="usuarios-sectores-config.js"></script>
+    <script>
+        let allSectorsData = {};
+
+        // Simular datos de todos los sectores
+        function generateAllSectorsData() {
+            const sectors = [2,3,4,5,6,13,14,15,17,18,26,27,28,29,30,39,40,41,42,43,49,50,51,52,53];
+            const data = {};
+            
+            sectors.forEach(sector => {
+                data[sector] = {
+                    A: {
+                        flow: Math.random() * 10,
+                        total: Math.random() * 1000,
+                        daily: Math.random() * 50,
+                        status: Math.random() > 0.5,
+                        mode: Math.floor(Math.random() * 3)
+                    },
+                    B: {
+                        flow: Math.random() * 10,
+                        total: Math.random() * 1000,
+                        daily: Math.random() * 50,
+                        status: Math.random() > 0.5,
+                        mode: Math.floor(Math.random() * 3)
+                    }
+                };
+            });
+            
+            return data;
+        }
+
+        function formatFlow(flow) {
+            return (flow * 1000 / 3600).toFixed(1);
+        }
+
+        function formatCounter(value) {
+            return value.toFixed(1);
+        }
+
+        function getModeText(mode) {
+            switch(mode) {
+                case 0: return 'OFF';
+                case 1: return 'MAN';
+                case 2: return 'AUTO';
+                default: return '---';
+            }
+        }
+
+        function renderAllSectors() {
+            const grid = document.getElementById('sectors-grid');
+            let html = '';
+
+            for (const [sector, data] of Object.entries(allSectorsData)) {
+                const sectorLabel = getSectorLabel(parseInt(sector));
+                
+                html += `
+                    <div class="sector-card">
+                        <div class="sector-title">${sectorLabel}</div>
+                        
+                        <div class="valve-row">
+                            <div class="valve-info">
+                                <div class="status-dot ${data.A.status ? 'active' : ''}"></div>
+                                <span>Válvula A</span>
+                                <span class="valve-data">${formatFlow(data.A.flow)} l/s</span>
+                            </div>
+                            <div class="valve-data">
+                                ${formatCounter(data.A.total)} m³ | ${getModeText(data.A.mode)}
+                            </div>
+                        </div>
+                        
+                        <div class="valve-row">
+                            <div class="valve-info">
+                                <div class="status-dot ${data.B.status ? 'active' : ''}"></div>
+                                <span>Válvula B</span>
+                                <span class="valve-data">${formatFlow(data.B.flow)} l/s</span>
+                            </div>
+                            <div class="valve-data">
+                                ${formatCounter(data.B.total)} m³ | ${getModeText(data.B.mode)}
+                            </div>
+                        </div>
+                        
+                        <div class="controls">
+                            <button class="btn-small" onclick="resetSector(${sector}, 'A')">Reset A</button>
+                            <button class="btn-small" onclick="resetSector(${sector}, 'B')">Reset B</button>
+                            <button class="btn-small" onclick="viewSector(${sector})">Ver Detalle</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            grid.innerHTML = html;
+            grid.style.display = 'grid';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function loadAllSectors() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('sectors-grid').style.display = 'none';
+            
+            // Simular carga de datos
+            setTimeout(() => {
+                allSectorsData = generateAllSectorsData();
+                renderAllSectors();
+            }, 1000);
+        }
+
+        function resetSector(sector, valve) {
+            if (confirm(`¿Resetear contador del sector ${getSectorLabel(sector)} válvula ${valve}?`)) {
+                console.log(`Reset sector ${sector} valve ${valve}`);
+                // Aquí enviarías el comando a Node-RED
+                loadAllSectors(); // Recargar datos
+            }
+        }
+
+        function viewSector(sector) {
+            alert(`Ver detalles del sector ${getSectorLabel(sector)}`);
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllSectors();
+        });
+    </script>
+</body>
+</html>
