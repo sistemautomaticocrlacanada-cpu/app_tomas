@@ -19,8 +19,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background:
-                radial-gradient(circle at top, #020617 0, #000 75%);
+            background: radial-gradient(circle at top, #020617 0, #000 75%);
             min-height: 100vh;
             color: #e5e7eb;
             overflow-x: hidden;
@@ -245,6 +244,28 @@
             font-size: 1.1em;
             font-weight: 700;
             color: #e5e7eb;
+        }
+
+        .mini-chart {
+            margin: 10px 0 4px;
+            padding: 8px 6px 4px;
+            background: rgba(15,23,42,0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(55,65,81,0.9);
+        }
+
+        .mini-chart-title {
+            font-size: 0.76em;
+            color: #9ca3af;
+            margin-bottom: 6px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .mini-chart canvas {
+            width: 100%;
+            display: block;
         }
 
         .controls {
@@ -509,7 +530,7 @@
         document.getElementById('install-btn').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
+                await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 document.getElementById('install-prompt').style.display = 'none';
             }
@@ -599,8 +620,7 @@
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
 
-                const data = await response.json();
-                return data;
+                return await response.json();
             } catch (error) {
                 console.error('Error obteniendo datos:', error);
                 return generarDatosSimulados();
@@ -650,14 +670,78 @@
             }
         }
 
+        function getMiniChartData(dailyValue) {
+            const base = Number(dailyValue) || 0;
+            const points = [];
+            for (let i = 6; i >= 0; i--) {
+                const factor = 0.6 + Math.random() * 0.8;
+                points.push(Number((base * factor).toFixed(2)));
+            }
+            return points;
+        }
+
+        function drawMiniConsumptionChart(dailyValue) {
+            const canvas = document.getElementById('memac-consumption-chart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.offsetWidth || 300;
+            canvas.width = width;
+            canvas.height = 80;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const padding = 8;
+            const values = getMiniChartData(dailyValue);
+            const max = Math.max(...values, 1);
+
+            ctx.clearRect(0, 0, w, h);
+
+            ctx.strokeStyle = 'rgba(71,85,105,0.8)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, h - padding);
+            ctx.lineTo(w - padding, h - padding);
+            ctx.stroke();
+
+            const stepX = (w - padding * 2) / (values.length - 1);
+
+            ctx.beginPath();
+            values.forEach((v, i) => {
+                const x = padding + i * stepX;
+                const y = h - padding - ((v / max) * (h - padding * 2));
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.lineTo(w - padding, h - padding);
+            ctx.lineTo(padding, h - padding);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(34,197,94,0.12)';
+            ctx.fill();
+
+            values.forEach((v, i) => {
+                const x = padding + i * stepX;
+                const y = h - padding - ((v / max) * (h - padding * 2));
+                ctx.beginPath();
+                ctx.arc(x, y, i === values.length - 1 ? 3.5 : 2.2, 0, Math.PI * 2);
+                ctx.fillStyle = i === values.length - 1 ? '#4ade80' : '#22c55e';
+                ctx.fill();
+            });
+        }
+
         function renderSector() {
             if (!sectorData) return;
 
             const container = document.getElementById('sector-container');
             const data = sectorData.data;
             
-            const simulatedWarning = sectorData.simulated ? 
-                '<div style="background: rgba(245,158,11,0.18); padding: 9px; border-radius: 8px; margin-bottom: 10px; text-align: center; font-size: 0.86em; border:1px solid rgba(245,158,11,0.7); color:#fed7aa;">⚠️ Datos simulados - Verificar conexión Node-RED</div>' : '';
+            const simulatedWarning = sectorData.simulated
+                ? '<div style="background: rgba(245,158,11,0.18); padding: 9px; border-radius: 8px; margin-bottom: 10px; text-align: center; font-size: 0.86em; border:1px solid rgba(245,158,11,0.7); color:#fed7aa;">⚠️ Datos simulados - Verificar conexión Node-RED</div>'
+                : '';
             
             const html = `
                 <div class="sector-card">
@@ -697,6 +781,11 @@
                                 </div>
                             </div>
 
+                            <div class="mini-chart">
+                                <div class="mini-chart-title">m³ consumidos recientes</div>
+                                <canvas id="memac-consumption-chart"></canvas>
+                            </div>
+
                             <div class="controls">
                                 <button class="btn" onclick="resetDaily()">🔄 Reset Diario</button>
                                 <button class="btn" onclick="resetTotal()">🗑️ Reset Total</button>
@@ -711,6 +800,7 @@
             `;
 
             container.innerHTML = html;
+            drawMiniConsumptionChart(data.daily);
         }
 
         async function refreshData() {
@@ -775,14 +865,22 @@
 
         document.getElementById('node-red-url').addEventListener('change', (e) => {
             nodeRedUrl = e.target.value.trim();
-            localStorage.setItem('nodeRedUrl', nodeRedUrl);
+            try {
+                localStorage.setItem('nodeRedUrl', nodeRedUrl);
+            } catch (e) {
+                console.warn('No se pudo guardar nodeRedUrl');
+            }
         });
 
         async function init() {
-            const savedUrl = localStorage.getItem('nodeRedUrl');
-            if (savedUrl) {
-                nodeRedUrl = savedUrl;
-                document.getElementById('node-red-url').value = savedUrl;
+            try {
+                const savedUrl = localStorage.getItem('nodeRedUrl');
+                if (savedUrl) {
+                    nodeRedUrl = savedUrl;
+                    document.getElementById('node-red-url').value = savedUrl;
+                }
+            } catch (e) {
+                console.warn('No se pudo leer nodeRedUrl guardada');
             }
 
             if (!validateUser()) {
@@ -796,6 +894,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', init);
+
+        window.addEventListener('resize', () => {
+            if (sectorData && sectorData.data) {
+                drawMiniConsumptionChart(sectorData.data.daily);
+            }
+        });
 
         window.addEventListener('beforeunload', () => {
             if (updateInterval) {
