@@ -27,7 +27,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 1100px;
             padding: 16px 12px 80px;
             margin: 0 auto;
         }
@@ -96,15 +96,50 @@
             animation: pulse 2s infinite;
         }
 
+        .status-light.offline {
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
         @keyframes pulse {
             0% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(0.85); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        .status-light.offline {
-            background: #ef4444;
-            box-shadow: 0 0 10px #ef4444;
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .summary-card {
+            background: rgba(15,23,42,0.96);
+            border: 1px solid rgba(30,64,175,0.55);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 12px 30px rgba(15,23,42,0.75);
+        }
+
+        .summary-label {
+            font-size: 0.76em;
+            color: #9ca3af;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .summary-value {
+            font-size: 1.35em;
+            font-weight: 800;
+            color: #e5e7eb;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
         .sector-card {
@@ -112,7 +147,6 @@
             border: 1px solid rgba(30,64,175,0.7);
             border-radius: 20px;
             padding: 18px 16px 16px;
-            margin-bottom: 18px;
             box-shadow: 0 18px 48px rgba(15,23,42,0.9);
         }
 
@@ -128,10 +162,10 @@
         }
 
         .sector-title {
-            font-size: 1.1em;
+            font-size: 1.05em;
             font-weight: 700;
             color: #e5e7eb;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
         }
 
@@ -140,13 +174,21 @@
             padding: 6px 14px;
             border-radius: 999px;
             font-weight: 600;
-            font-size: 0.85em;
+            font-size: 0.82em;
             color: #e0f2fe;
             box-shadow: 0 10px 24px rgba(8,145,178,0.9);
         }
 
-        .valve-section {
-            margin-top: 10px;
+        .parcel-badge {
+            margin-top: 8px;
+            display: inline-block;
+            background: rgba(34,197,94,0.12);
+            color: #86efac;
+            border: 1px solid rgba(34,197,94,0.3);
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.75em;
+            font-weight: 600;
         }
 
         .valve-box {
@@ -154,7 +196,6 @@
             border: 1px solid rgba(51,65,85,0.9);
             border-radius: 16px;
             padding: 16px 14px 14px;
-            margin-bottom: 12px;
         }
 
         .valve-header {
@@ -194,6 +235,18 @@
             border-color: #ef4444;
         }
 
+        .mode-badge {
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.8em;
+            font-weight: 600;
+            border: 1px solid rgba(55,65,81,0.9);
+        }
+
+        .mode-auto { background: rgba(37,99,235,0.3); color: #60a5fa; }
+        .mode-manual { background: rgba(22,163,74,0.25); color: #4ade80; }
+        .mode-off { background: rgba(148,163,184,0.25); color: #e5e7eb; }
+
         .flow-display {
             text-align: center;
             margin: 18px 0;
@@ -204,7 +257,7 @@
         }
 
         .flow-value {
-            font-size: 2.6em;
+            font-size: 2.4em;
             font-weight: 800;
             color: #22d3ee;
             text-shadow: 0 0 18px rgba(34,211,238,0.7);
@@ -241,7 +294,7 @@
         }
 
         .metric-value {
-            font-size: 1.1em;
+            font-size: 1.05em;
             font-weight: 700;
             color: #e5e7eb;
         }
@@ -294,18 +347,6 @@
             background: linear-gradient(135deg, rgba(30,64,175,0.6), rgba(15,23,42,0.9));
             border-color: rgba(37,99,235,0.9);
         }
-
-        .mode-badge {
-            padding: 5px 10px;
-            border-radius: 999px;
-            font-size: 0.8em;
-            font-weight: 600;
-            border: 1px solid rgba(55,65,81,0.9);
-        }
-
-        .mode-auto { background: rgba(37,99,235,0.3); color: #60a5fa; }
-        .mode-manual { background: rgba(22,163,74,0.25); color: #4ade80; }
-        .mode-off { background: rgba(148,163,184,0.25); color: #e5e7eb; }
 
         .error-message {
             text-align: center;
@@ -400,44 +441,6 @@
             margin-top: 2px;
         }
 
-        .config-input::placeholder {
-            color: rgba(148,163,184,0.7);
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px 8px 80px;
-            }
-            
-            .flow-value {
-                font-size: 2.3em;
-            }
-            
-            .metrics-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            
-            .controls {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-info {
-                flex-direction: column;
-                text-align: center;
-                align-items: flex-start;
-            }
-            
-            .user-info > div {
-                width: 100%;
-            }
-            
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
         .install-prompt {
             background: rgba(22,163,74,0.18);
             border: 1px solid rgba(34,197,94,0.5);
@@ -460,6 +463,37 @@
             font-size: 0.9em;
             font-weight: 600;
         }
+
+        @media (max-width: 900px) {
+            .cards-grid,
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 10px 8px 80px;
+            }
+
+            .cards-grid,
+            .summary-grid,
+            .metrics-grid,
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info,
+            .card-header,
+            .valve-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .flow-value {
+                font-size: 2.1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -476,8 +510,8 @@
 
         <div class="connection-config">
             <label>🔗 Servidor MEMAC:</label>
-            <input type="text" id="node-red-url" class="config-input" 
-                   placeholder="http://tu-servidor.com:1880" 
+            <input type="text" id="node-red-url" class="config-input"
+                   placeholder="http://tu-servidor.com:1880"
                    value="http://localhost:1880">
         </div>
 
@@ -493,31 +527,28 @@
 
         <div id="loading" class="loading">
             <div class="loading-spinner"></div>
-            <div>Cargando datos de tu instalación...</div>
+            <div>Cargando datos de tus válvulas...</div>
         </div>
 
         <div id="error" class="error-message" style="display: none;">
             <h3>❌ Error de Conexión</h3>
             <p id="error-message">No se pudo conectar con el servidor.</p>
-            <button class="btn" onclick="reintentar()" style="margin-top: 15px; width: auto; display: inline-block;">
+            <button class="btn" onclick="reintentar()" style="margin-top:15px;width:auto;display:inline-block;">
                 🔄 Reintentar
             </button>
         </div>
 
-        <div id="sector-container"></div>
+        <div id="summary-container"></div>
+        <div id="sector-container" class="cards-grid"></div>
     </div>
 
-    <button class="refresh-btn" onclick="refreshData()" title="Actualizar datos">
-        🔄
-    </button>
+    <button class="refresh-btn" onclick="refreshData()" title="Actualizar datos">🔄</button>
 
     <script src="usuarios-sectores-config.js"></script>
     <script>
         let currentUser = null;
-        let currentSector = null;
-        let currentValve = null;
-        let sectorData = null;
         let nodeRedUrl = 'http://localhost:1880';
+        let userAccessData = [];
         let updateInterval = null;
 
         let deferredPrompt;
@@ -546,7 +577,7 @@
 
         function validateUser() {
             const { user, token } = getURLParams();
-            
+
             if (!user || !token) {
                 showError('URL inválida. Faltan parámetros de usuario o token.');
                 return false;
@@ -558,6 +589,7 @@
             }
 
             const validation = validarAccesoSector(user, token);
+
             if (!validation.valido) {
                 showError(validation.error);
                 return false;
@@ -566,14 +598,15 @@
             currentUser = {
                 id: user,
                 name: validation.usuario,
-                sector: validation.sector,
-                valve: validation.valve,
-                sectorLabel: validation.sectorLabel,
-                token: token
+                token: token,
+                accesos: validation.accesos || []
             };
-            
-            currentSector = validation.sector;
-            currentValve = validation.valve;
+
+            if (!currentUser.accesos.length) {
+                showError('Este usuario no tiene válvulas asignadas.');
+                return false;
+            }
+
             return true;
         }
 
@@ -587,15 +620,14 @@
         function showUserInfo() {
             const userInfo = document.getElementById('user-info');
             const userBadge = document.getElementById('user-badge');
-            
-            userBadge.textContent = `${currentUser.name} - ${currentUser.sectorLabel} ${currentUser.valve}`;
+            userBadge.textContent = `${currentUser.name} · ${currentUser.accesos.length} válvula(s)`;
             userInfo.style.display = 'flex';
         }
 
         function updateConnectionStatus(connected, text = '') {
             const statusLight = document.getElementById('connection-status');
             const statusText = document.getElementById('connection-text');
-            
+
             if (connected) {
                 statusLight.classList.remove('offline');
                 statusText.textContent = text || 'Conectado';
@@ -605,9 +637,9 @@
             }
         }
 
-        async function obtenerDatosSector() {
+        async function obtenerDatosAcceso(acceso) {
             try {
-                const url = `${nodeRedUrl}/api/sector/${currentSector}/${currentValve}`;
+                const url = `${nodeRedUrl}/api/sector/${acceso.sector}/${acceso.valve}`;
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -620,27 +652,40 @@
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
 
-                return await response.json();
+                const responseData = await response.json();
+
+                return {
+                    ...acceso,
+                    sectorLabel: getSectorLabel(acceso.sector),
+                    lastUpdate: new Date().toLocaleString(),
+                    simulated: false,
+                    data: {
+                        flow: Number(responseData?.data?.flow ?? responseData?.flow ?? 0),
+                        total: Number(responseData?.data?.total ?? responseData?.total ?? 0),
+                        daily: Number(responseData?.data?.daily ?? responseData?.daily ?? 0),
+                        status: Boolean(responseData?.data?.status ?? responseData?.status ?? false),
+                        mode: Number(responseData?.data?.mode ?? responseData?.mode ?? 0)
+                    }
+                };
             } catch (error) {
-                console.error('Error obteniendo datos:', error);
-                return generarDatosSimulados();
+                console.error('Error obteniendo datos del acceso:', acceso, error);
+                return generarDatosSimulados(acceso);
             }
         }
 
-        function generarDatosSimulados() {
+        function generarDatosSimulados(acceso) {
             return {
-                sector: currentSector,
-                valve: currentValve,
-                sectorLabel: currentUser.sectorLabel,
+                ...acceso,
+                sectorLabel: getSectorLabel(acceso.sector),
+                lastUpdate: new Date().toLocaleString(),
+                simulated: true,
                 data: {
                     flow: Math.random() * 10,
                     total: Math.random() * 1000,
                     daily: Math.random() * 50,
                     status: Math.random() > 0.5,
                     mode: Math.floor(Math.random() * 3)
-                },
-                lastUpdate: new Date().toLocaleString(),
-                simulated: true
+                }
             };
         }
 
@@ -649,11 +694,11 @@
         }
 
         function formatCounter(value) {
-            return value.toFixed(1).padStart(8, '0');
+            return Number(value).toFixed(1);
         }
 
         function getModeText(mode) {
-            switch(mode) {
+            switch (mode) {
                 case 0: return 'OFF';
                 case 1: return 'MANUAL';
                 case 2: return 'AUTO';
@@ -662,7 +707,7 @@
         }
 
         function getModeClass(mode) {
-            switch(mode) {
+            switch (mode) {
                 case 0: return 'mode-off';
                 case 1: return 'mode-manual';
                 case 2: return 'mode-auto';
@@ -680,8 +725,8 @@
             return points;
         }
 
-        function drawMiniConsumptionChart(dailyValue) {
-            const canvas = document.getElementById('memac-consumption-chart');
+        function drawMiniConsumptionChart(canvasId, dailyValue) {
+            const canvas = document.getElementById(canvasId);
             if (!canvas) return;
 
             const ctx = canvas.getContext('2d');
@@ -733,30 +778,63 @@
             });
         }
 
-        function renderSector() {
-            if (!sectorData) return;
+        function renderSummary() {
+            const container = document.getElementById('summary-container');
 
-            const container = document.getElementById('sector-container');
-            const data = sectorData.data;
-            
-            const simulatedWarning = sectorData.simulated
-                ? '<div style="background: rgba(245,158,11,0.18); padding: 9px; border-radius: 8px; margin-bottom: 10px; text-align: center; font-size: 0.86em; border:1px solid rgba(245,158,11,0.7); color:#fed7aa;">⚠️ Datos simulados - Verificar conexión Node-RED</div>'
-                : '';
-            
-            const html = `
-                <div class="sector-card">
-                    ${simulatedWarning}
-                    <div class="card-header">
-                        <div class="sector-title">${sectorData.sectorLabel}</div>
-                        <div class="valve-badge">Válvula ${sectorData.valve}</div>
+            const totalValvulas = userAccessData.length;
+            const activas = userAccessData.filter(item => item.data.status).length;
+            const totalCaudal = userAccessData.reduce((sum, item) => sum + Number(item.data.flow || 0), 0);
+            const totalConsumo = userAccessData.reduce((sum, item) => sum + Number(item.data.daily || 0), 0);
+
+            container.innerHTML = `
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="summary-label">Válvulas</div>
+                        <div class="summary-value">${totalValvulas}</div>
                     </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Activas</div>
+                        <div class="summary-value">${activas}</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Caudal Total</div>
+                        <div class="summary-value">${formatFlow(totalCaudal)} l/s</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Consumo Diario</div>
+                        <div class="summary-value">${formatCounter(totalConsumo)} m³</div>
+                    </div>
+                </div>
+            `;
+        }
 
-                    <div class="valve-section">
+        function renderAccessCards() {
+            const container = document.getElementById('sector-container');
+
+            let html = '';
+
+            userAccessData.forEach((item, index) => {
+                const data = item.data;
+                const simulatedWarning = item.simulated
+                    ? `<div style="background: rgba(245,158,11,0.18); padding: 9px; border-radius: 8px; margin-bottom: 10px; text-align: center; font-size: 0.86em; border:1px solid rgba(245,158,11,0.7); color:#fed7aa;">⚠️ Datos simulados - Verificar conexión Node-RED</div>`
+                    : '';
+
+                html += `
+                    <div class="sector-card">
+                        ${simulatedWarning}
+                        <div class="card-header">
+                            <div>
+                                <div class="sector-title">${item.sectorLabel}</div>
+                                <div class="parcel-badge">Parcela ${item.parcela} · Contador ${item.contador}</div>
+                            </div>
+                            <div class="valve-badge">Válvula ${item.valve}</div>
+                        </div>
+
                         <div class="valve-box">
                             <div class="valve-header">
                                 <div class="valve-title">
                                     <div class="valve-status-light ${data.status ? 'running' : 'stopped'}"></div>
-                                    🚿 Válvula ${sectorData.valve}
+                                    🚿 Sector ${item.sector} · Válvula ${item.valve}
                                 </div>
                                 <div class="mode-badge ${getModeClass(data.mode)}">
                                     ${getModeText(data.mode)}
@@ -783,31 +861,36 @@
 
                             <div class="mini-chart">
                                 <div class="mini-chart-title">m³ consumidos recientes</div>
-                                <canvas id="memac-consumption-chart"></canvas>
+                                <canvas id="chart-${index}"></canvas>
                             </div>
 
                             <div class="controls">
-                                <button class="btn" onclick="resetDaily()">🔄 Reset Diario</button>
-                                <button class="btn" onclick="resetTotal()">🗑️ Reset Total</button>
+                                <button class="btn" onclick="resetDaily(${index})">🔄 Reset Diario</button>
+                                <button class="btn" onclick="resetTotal(${index})">🗑️ Reset Total</button>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="last-update">
-                        Última actualización: ${sectorData.lastUpdate}
+                        <div class="last-update">
+                            Última actualización: ${item.lastUpdate}
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            });
 
             container.innerHTML = html;
-            drawMiniConsumptionChart(data.daily);
+
+            userAccessData.forEach((item, index) => {
+                drawMiniConsumptionChart(`chart-${index}`, item.data.daily);
+            });
         }
 
         async function refreshData() {
             try {
                 updateConnectionStatus(true, 'Actualizando...');
-                sectorData = await obtenerDatosSector();
-                renderSector();
+                const results = await Promise.all(currentUser.accesos.map(obtenerDatosAcceso));
+                userAccessData = results;
+                renderSummary();
+                renderAccessCards();
                 updateConnectionStatus(true, 'Conectado');
             } catch (error) {
                 console.error('Error actualizando datos:', error);
@@ -821,9 +904,11 @@
             setTimeout(init, 1000);
         }
 
-        async function enviarComando(action, params = {}) {
+        async function enviarComando(index, action, params = {}) {
             try {
-                const url = `${nodeRedUrl}/api/sector/${currentSector}/${currentValve}/command`;
+                const acceso = userAccessData[index];
+                const url = `${nodeRedUrl}/api/sector/${acceso.sector}/${acceso.valve}/command`;
+
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -832,8 +917,8 @@
                     },
                     body: JSON.stringify({
                         action,
-                        sector: currentSector,
-                        valve: currentValve,
+                        sector: acceso.sector,
+                        valve: acceso.valve,
                         ...params
                     })
                 });
@@ -851,41 +936,24 @@
             }
         }
 
-        async function resetDaily() {
+        async function resetDaily(index) {
             if (confirm('¿Seguro que quieres resetear el contador diario?')) {
-                await enviarComando('reset_daily');
+                await enviarComando(index, 'reset_daily');
             }
         }
 
-        async function resetTotal() {
+        async function resetTotal(index) {
             if (confirm('¿Seguro que quieres resetear COMPLETAMENTE el contador total?\n(Se perderán todos los datos acumulados)')) {
-                await enviarComando('reset_total', { confirm: true });
+                await enviarComando(index, 'reset_total', { confirm: true });
             }
         }
 
         document.getElementById('node-red-url').addEventListener('change', (e) => {
             nodeRedUrl = e.target.value.trim();
-            try {
-                localStorage.setItem('nodeRedUrl', nodeRedUrl);
-            } catch (e) {
-                console.warn('No se pudo guardar nodeRedUrl');
-            }
         });
 
         async function init() {
-            try {
-                const savedUrl = localStorage.getItem('nodeRedUrl');
-                if (savedUrl) {
-                    nodeRedUrl = savedUrl;
-                    document.getElementById('node-red-url').value = savedUrl;
-                }
-            } catch (e) {
-                console.warn('No se pudo leer nodeRedUrl guardada');
-            }
-
-            if (!validateUser()) {
-                return;
-            }
+            if (!validateUser()) return;
 
             showUserInfo();
             document.getElementById('loading').style.display = 'none';
@@ -896,15 +964,13 @@
         document.addEventListener('DOMContentLoaded', init);
 
         window.addEventListener('resize', () => {
-            if (sectorData && sectorData.data) {
-                drawMiniConsumptionChart(sectorData.data.daily);
-            }
+            userAccessData.forEach((item, index) => {
+                drawMiniConsumptionChart(`chart-${index}`, item.data.daily);
+            });
         });
 
         window.addEventListener('beforeunload', () => {
-            if (updateInterval) {
-                clearInterval(updateInterval);
-            }
+            if (updateInterval) clearInterval(updateInterval);
         });
     </script>
 </body>
