@@ -3,254 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrador - Todos los Sectores</title>
+    <title>MEMAC Admin Access</title>
+    <meta name="theme-color" content="#020617">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #020617;
+            --bg-soft: #0f172a;
+            --panel: rgba(15,23,42,0.96);
+            --line: rgba(51,65,85,0.95);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --radius: 22px;
+            --shadow: 0 24px 60px rgba(0,0,0,0.45);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
-            color: #fff;
-            padding: 10px;
-        }
-        .header {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        .admin-badge {
-            background: linear-gradient(45deg, #FF6B35, #F7931E);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-        .sector-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-        .sector-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.2);
-        }
-        .sector-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #00D4FF;
-        }
-        .valve-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-        }
-        .valve-info {
+            background: radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000 100%);
+            color: var(--text);
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 26px 22px;
+        }
+
+        .top-badge {
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(245,158,11,0.16);
+            border: 1px solid rgba(245,158,11,0.35);
+            color: #fde68a;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 16px;
         }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #FF3B30;
+
+        h1 {
+            font-size: 1.45rem;
+            color: #c7d2fe;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
-        .status-dot.active { background: #32D74B; }
-        .valve-data {
-            font-size: 0.9em;
-            color: #ccc;
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 22px;
         }
-        .controls {
+
+        .status-box {
+            border-radius: 16px;
+            padding: 14px 14px;
+            margin-bottom: 18px;
+            border: 1px solid var(--line);
+            background: rgba(15,23,42,0.72);
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .status-box.ok {
+            background: rgba(34,197,94,0.14);
+            border-color: rgba(34,197,94,0.38);
+            color: #bbf7d0;
+        }
+
+        .status-box.warn {
+            background: rgba(245,158,11,0.14);
+            border-color: rgba(245,158,11,0.38);
+            color: #fde68a;
+        }
+
+        .status-box.error {
+            background: rgba(239,68,68,0.14);
+            border-color: rgba(239,68,68,0.38);
+            color: #fecaca;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
             display: flex;
-            gap: 5px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 6px;
         }
-        .btn-small {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 0.8em;
+
+        label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(15,23,42,0.95);
+            color: var(--text);
+            border: 1px solid rgba(51,65,85,0.95);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: rgba(59,130,246,0.95);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .btn {
+            border: 1px solid rgba(51,65,85,0.9);
+            background: linear-gradient(180deg, rgba(30,41,59,0.95), rgba(15,23,42,0.98));
+            color: var(--text);
+            border-radius: 14px;
+            padding: 12px 14px;
             cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: 0.2s ease;
         }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.1em;
+
+        .btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(59,130,246,0.9);
         }
-        .refresh-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: #FF6B35;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(21,128,61,0.18));
+            border-color: rgba(34,197,94,0.45);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(59,130,246,0.20), rgba(37,99,235,0.18));
+            border-color: rgba(59,130,246,0.45);
+        }
+
+        .help {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(51,65,85,0.7);
+            color: var(--muted);
+            font-size: 0.84rem;
+            line-height: 1.5;
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: #93c5fd;
+            word-break: break-all;
+        }
+
+        @media (max-width: 560px) {
+            .card {
+                padding: 20px 16px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="admin-badge">👑 ADMINISTRADOR</div>
-        <h1>Panel de Control - Todos los Sectores</h1>
-        <p>Vista completa del sistema</p>
-        <div style="margin-top: 15px;">
-            <button onclick="window.location.href='admin-panel.html'" style="background: #FF6B35; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                🛠️ Panel de Administración Completo
-            </button>
+    <main class="card">
+        <div class="top-badge">🔐 Acceso Administrador</div>
+        <h1>MEMAC Admin</h1>
+        <p class="subtitle">
+            Validación de acceso al panel de administración del sistema de riego.
+        </p>
+
+        <div id="statusBox" class="status-box">
+            Comprobando parámetros de acceso...
         </div>
-    </div>
 
-    <div id="loading" class="loading">
-        <div>🔄 Cargando todos los sectores...</div>
-    </div>
+        <form id="adminForm" class="form-grid">
+            <div class="form-group">
+                <label for="adminUser">Usuario</label>
+                <input type="text" id="adminUser" value="admin" autocomplete="username">
+            </div>
 
-    <div id="sectors-grid" class="grid" style="display: none;"></div>
+            <div class="form-group">
+                <label for="adminToken">Token administrador</label>
+                <input type="password" id="adminToken" placeholder="Introduce el token maestro" autocomplete="current-password">
+            </div>
 
-    <button class="refresh-btn" onclick="loadAllSectors()">🔄</button>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Entrar al panel</button>
+                <button type="button" class="btn btn-secondary" onclick="rellenarDesdeURL()">Usar token de la URL</button>
+            </div>
+        </form>
 
-    <script src="usuarios-sectores-config.js"></script>
+        <div class="help">
+            Panel destino: <span class="mono">admin-panel-2.html</span><br>
+            Si entras desde la app cliente con <span class="mono">user=admin</span>, esta pantalla valida y redirige al panel. [file:159][file:155]
+        </div>
+    </main>
+
     <script>
-        let allSectorsData = {};
+        const ADMIN_USER = 'admin';
+        const ADMIN_TOKEN = 'admin_master_2024_secure';
 
-        // Simular datos de todos los sectores
-        function generateAllSectorsData() {
-            const sectors = [2,3,4,5,6,13,14,15,17,18,26,27,28,29,30,39,40,41,42,43,49,50,51,52,53];
-            const data = {};
-            
-            sectors.forEach(sector => {
-                data[sector] = {
-                    A: {
-                        flow: Math.random() * 10,
-                        total: Math.random() * 1000,
-                        daily: Math.random() * 50,
-                        status: Math.random() > 0.5,
-                        mode: Math.floor(Math.random() * 3)
-                    },
-                    B: {
-                        flow: Math.random() * 10,
-                        total: Math.random() * 1000,
-                        daily: Math.random() * 50,
-                        status: Math.random() > 0.5,
-                        mode: Math.floor(Math.random() * 3)
-                    }
-                };
-            });
-            
-            return data;
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                user: params.get('user'),
+                token: params.get('token')
+            };
         }
 
-        function formatFlow(flow) {
-            return (flow * 1000 / 3600).toFixed(1);
+        function setStatus(message, type = '') {
+            const box = document.getElementById('statusBox');
+            box.className = 'status-box';
+            if (type) box.classList.add(type);
+            box.textContent = message;
         }
 
-        function formatCounter(value) {
-            return value.toFixed(1);
+        function credencialesValidas(user, token) {
+            return user === ADMIN_USER && token === ADMIN_TOKEN;
         }
 
-        function getModeText(mode) {
-            switch(mode) {
-                case 0: return 'OFF';
-                case 1: return 'MAN';
-                case 2: return 'AUTO';
-                default: return '---';
+        function construirURLPanel() {
+            const base = window.location.pathname.replace('admin.html', 'admin-panel-2.html');
+            return `${window.location.origin}${base}?user=${encodeURIComponent(ADMIN_USER)}&token=${encodeURIComponent(ADMIN_TOKEN)}`;
+        }
+
+        function irAlPanel() {
+            window.location.href = construirURLPanel();
+        }
+
+        function rellenarDesdeURL() {
+            const { user, token } = getURLParams();
+
+            if (user) document.getElementById('adminUser').value = user;
+            if (token) document.getElementById('adminToken').value = token;
+
+            if (user || token) {
+                setStatus('Se han cargado las credenciales desde la URL.', 'warn');
+            } else {
+                setStatus('La URL no contiene credenciales de administrador.', 'error');
             }
         }
 
-        function renderAllSectors() {
-            const grid = document.getElementById('sectors-grid');
-            let html = '';
+        function validarAccesoAutomatico() {
+            const { user, token } = getURLParams();
 
-            for (const [sector, data] of Object.entries(allSectorsData)) {
-                const sectorLabel = getSectorLabel(parseInt(sector));
-                
-                html += `
-                    <div class="sector-card">
-                        <div class="sector-title">${sectorLabel}</div>
-                        
-                        <div class="valve-row">
-                            <div class="valve-info">
-                                <div class="status-dot ${data.A.status ? 'active' : ''}"></div>
-                                <span>Válvula A</span>
-                                <span class="valve-data">${formatFlow(data.A.flow)} l/s</span>
-                            </div>
-                            <div class="valve-data">
-                                ${formatCounter(data.A.total)} m³ | ${getModeText(data.A.mode)}
-                            </div>
-                        </div>
-                        
-                        <div class="valve-row">
-                            <div class="valve-info">
-                                <div class="status-dot ${data.B.status ? 'active' : ''}"></div>
-                                <span>Válvula B</span>
-                                <span class="valve-data">${formatFlow(data.B.flow)} l/s</span>
-                            </div>
-                            <div class="valve-data">
-                                ${formatCounter(data.B.total)} m³ | ${getModeText(data.B.mode)}
-                            </div>
-                        </div>
-                        
-                        <div class="controls">
-                            <button class="btn-small" onclick="resetSector(${sector}, 'A')">Reset A</button>
-                            <button class="btn-small" onclick="resetSector(${sector}, 'B')">Reset B</button>
-                            <button class="btn-small" onclick="viewSector(${sector})">Ver Detalle</button>
-                        </div>
-                    </div>
-                `;
+            if (!user && !token) {
+                setStatus('Introduce las credenciales de administrador para continuar.', 'warn');
+                return;
             }
 
-            grid.innerHTML = html;
-            grid.style.display = 'grid';
-            document.getElementById('loading').style.display = 'none';
-        }
-
-        function loadAllSectors() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('sectors-grid').style.display = 'none';
-            
-            // Simular carga de datos
-            setTimeout(() => {
-                allSectorsData = generateAllSectorsData();
-                renderAllSectors();
-            }, 1000);
-        }
-
-        function resetSector(sector, valve) {
-            if (confirm(`¿Resetear contador del sector ${getSectorLabel(sector)} válvula ${valve}?`)) {
-                console.log(`Reset sector ${sector} valve ${valve}`);
-                // Aquí enviarías el comando a Node-RED
-                loadAllSectors(); // Recargar datos
+            if (credencialesValidas(user, token)) {
+                setStatus('Credenciales válidas. Redirigiendo al panel...', 'ok');
+                setTimeout(irAlPanel, 700);
+            } else {
+                setStatus('La URL contiene credenciales no válidas para administrador.', 'error');
+                rellenarDesdeURL();
             }
         }
 
-        function viewSector(sector) {
-            alert(`Ver detalles del sector ${getSectorLabel(sector)}`);
-        }
+        document.getElementById('adminForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllSectors();
+            const user = document.getElementById('adminUser').value.trim();
+            const token = document.getElementById('adminToken').value.trim();
+
+            if (!user || !token) {
+                setStatus('Debes indicar usuario y token.', 'error');
+                return;
+            }
+
+            if (!credencialesValidas(user, token)) {
+                setStatus('Usuario o token de administrador no válidos.', 'error');
+                return;
+            }
+
+            setStatus('Acceso correcto. Abriendo panel de administración...', 'ok');
+            setTimeout(irAlPanel, 500);
         });
+
+        document.addEventListener('DOMContentLoaded', validarAccesoAutomatico);
     </script>
 </body>
 </html>
