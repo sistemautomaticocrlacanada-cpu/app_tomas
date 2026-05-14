@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEMAC Admin Panel</title>
+    <title>MEMAC · Panel Administrador</title>
     <meta name="theme-color" content="#020617">
     <style>
         * {
@@ -15,19 +15,20 @@
         :root {
             --bg: #020617;
             --bg-soft: #0f172a;
-            --panel: #111827;
-            --panel-2: #1e293b;
-            --line: #334155;
+            --panel: rgba(15,23,42,0.96);
+            --panel-2: rgba(30,41,59,0.72);
+            --line: rgba(51,65,85,0.95);
             --text: #e5e7eb;
             --muted: #94a3b8;
-            --green: #22c55e;
-            --green-dark: #15803d;
-            --cyan: #22d3ee;
             --blue: #3b82f6;
-            --red: #ef4444;
+            --cyan: #22d3ee;
+            --green: #22c55e;
             --amber: #f59e0b;
-            --radius: 18px;
-            --shadow: 0 18px 48px rgba(0,0,0,0.35);
+            --red: #ef4444;
+            --shadow: 0 24px 60px rgba(0,0,0,0.4);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
         }
 
         body {
@@ -35,116 +36,104 @@
             background: radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000000 100%);
             color: var(--text);
             min-height: 100vh;
+            padding: 16px;
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1450px;
             margin: 0 auto;
-            padding: 18px;
         }
 
         .header {
-            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(17,24,39,0.98));
-            border: 1px solid rgba(51,65,85,0.9);
-            border-radius: 24px;
-            padding: 22px 24px;
+            background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
+            padding: 24px;
             box-shadow: var(--shadow);
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
+        .admin-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(245,158,11,0.16);
+            border: 1px solid rgba(245,158,11,0.35);
+            color: #fde68a;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 14px;
         }
 
-        .brand h1 {
-            font-size: 1.45rem;
-            letter-spacing: 0.14em;
+        .header h1 {
+            font-size: 1.6rem;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #a5b4fc;
-            margin-bottom: 6px;
+            color: #c7d2fe;
+            margin-bottom: 8px;
         }
 
-        .brand p {
+        .header p {
             color: var(--muted);
             font-size: 0.95rem;
         }
 
-        .admin-badge {
-            background: linear-gradient(135deg, var(--green), var(--green-dark));
-            color: #ecfdf5;
-            padding: 10px 16px;
-            border-radius: 999px;
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            flex: 1 1 220px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            user-select: none;
             font-weight: 700;
-            font-size: 0.88rem;
-            box-shadow: 0 10px 24px rgba(34,197,94,0.28);
+            text-align: center;
+            background: rgba(15,23,42,0.78);
+            border: 1px solid var(--line);
+            color: var(--muted);
+            transition: 0.2s ease;
         }
 
-        .top-grid,
-        .main-grid {
-            display: grid;
-            gap: 18px;
-            margin-bottom: 18px;
+        .tab:hover {
+            border-color: rgba(59,130,246,0.55);
+            color: var(--text);
         }
 
-        .top-grid {
-            grid-template-columns: 1.2fr 0.8fr;
-        }
-
-        .main-grid {
-            grid-template-columns: 0.9fr 1.1fr;
+        .tab.active {
+            color: #dbeafe;
+            background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(37,99,235,0.18));
+            border-color: rgba(59,130,246,0.45);
         }
 
         .panel {
             background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
-            border: 1px solid rgba(51,65,85,0.9);
-            border-radius: 22px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
             padding: 18px;
             box-shadow: var(--shadow);
+            margin-bottom: 16px;
         }
 
         .panel-title {
-            font-size: 0.95rem;
             color: var(--muted);
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             margin-bottom: 14px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-        }
-
-        .stat-card {
-            background: rgba(15,23,42,0.92);
-            border: 1px solid rgba(51,65,85,0.9);
-            border-radius: 16px;
-            padding: 14px;
-        }
-
-        .stat-label {
-            color: var(--muted);
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 6px;
-        }
-
-        .stat-value {
-            font-size: 1.45rem;
-            font-weight: 800;
-            color: var(--text);
-        }
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .toolbar {
+            display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
         }
 
         .btn {
@@ -152,7 +141,7 @@
             background: linear-gradient(180deg, rgba(30,41,59,0.95), rgba(15,23,42,0.98));
             color: var(--text);
             border-radius: 14px;
-            padding: 12px 14px;
+            padding: 11px 14px;
             cursor: pointer;
             font-size: 0.92rem;
             font-weight: 600;
@@ -161,51 +150,267 @@
 
         .btn:hover {
             transform: translateY(-1px);
-            border-color: rgba(59,130,246,0.9);
-        }
-
-        .btn-green {
-            background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(21,128,61,0.18));
-            border-color: rgba(34,197,94,0.5);
         }
 
         .btn-blue {
+            border-color: rgba(59,130,246,0.45);
             background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(37,99,235,0.18));
-            border-color: rgba(59,130,246,0.5);
         }
 
-        .btn-red {
-            background: linear-gradient(135deg, rgba(239,68,68,0.20), rgba(127,29,29,0.18));
-            border-color: rgba(239,68,68,0.45);
+        .btn-green {
+            border-color: rgba(34,197,94,0.45);
+            background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(21,128,61,0.18));
         }
 
         .btn-amber {
-            background: linear-gradient(135deg, rgba(245,158,11,0.20), rgba(120,53,15,0.18));
             border-color: rgba(245,158,11,0.45);
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(120,53,15,0.18));
         }
 
-        .section-header {
+        .btn-red {
+            border-color: rgba(239,68,68,0.45);
+            background: linear-gradient(135deg, rgba(239,68,68,0.22), rgba(127,29,29,0.18));
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .users-grid,
+        .tomas-grid,
+        .stats-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .users-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .tomas-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        }
+
+        .user-card,
+        .toma-card,
+        .stat-card,
+        .summary-card {
+            background: rgba(15,23,42,0.82);
+            border: 1px solid rgba(51,65,85,0.8);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .user-header,
+        .toma-title {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 10px;
+            align-items: flex-start;
             flex-wrap: wrap;
+            margin-bottom: 12px;
         }
 
-        .section-header h2 {
-            font-size: 1.05rem;
-            color: var(--text);
+        .user-name,
+        .toma-title strong {
+            color: #93c5fd;
+            font-size: 1rem;
+            font-weight: 800;
         }
 
-        .section-header p {
+        .user-id,
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .user-id {
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.35);
+            color: #dbeafe;
+        }
+
+        .pill-green {
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.35);
+            color: #dcfce7;
+        }
+
+        .pill-red {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.35);
+            color: #fecaca;
+        }
+
+        .pill-amber {
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.35);
+            color: #fde68a;
+        }
+
+        .detail-row,
+        .valve-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(51,65,85,0.45);
+            font-size: 0.9rem;
+        }
+
+        .detail-row:last-child,
+        .valve-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--muted);
+        }
+
+        .token-preview {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: #93c5fd;
+            font-size: 0.82rem;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            border-radius: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 12px rgba(239,68,68,0.5);
+        }
+
+        .status-dot.active {
+            background: var(--green);
+            box-shadow: 0 0 12px rgba(34,197,94,0.55);
+        }
+
+        .valve-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .valve-data {
             color: var(--muted);
             font-size: 0.88rem;
         }
 
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #93c5fd;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .summary-card h3 {
+            margin-bottom: 12px;
+            color: #c7d2fe;
+            font-size: 1rem;
+        }
+
+        .summary-card ul {
+            list-style: none;
+            display: grid;
+            gap: 8px;
+        }
+
+        .summary-card li {
+            padding: 10px 12px;
+            background: rgba(30,41,59,0.5);
+            border: 1px solid rgba(51,65,85,0.55);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 560px;
+            background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #c7d2fe;
+        }
+
+        .close-btn {
+            border: none;
+            background: rgba(239,68,68,0.12);
+            color: #fecaca;
+            border-radius: 12px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 14px;
         }
 
@@ -215,12 +420,8 @@
             gap: 6px;
         }
 
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
         label {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.08em;
@@ -232,7 +433,7 @@
             color: var(--text);
             border: 1px solid rgba(51,65,85,0.95);
             border-radius: 12px;
-            padding: 12px 12px;
+            padding: 12px;
             font-size: 0.95rem;
             outline: none;
         }
@@ -242,665 +443,644 @@
             box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
         }
 
-        .token-preview {
-            min-height: 46px;
+        .modal-actions {
             display: flex;
-            align-items: center;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px dashed rgba(59,130,246,0.45);
-            background: rgba(15,23,42,0.7);
-            color: #93c5fd;
-            font-family: monospace;
-            word-break: break-all;
-        }
-
-        .access-builder {
-            margin-top: 18px;
-            border-top: 1px solid rgba(51,65,85,0.8);
-            padding-top: 18px;
-        }
-
-        .access-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .access-list {
-            display: grid;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .access-item {
-            background: rgba(15,23,42,0.88);
-            border: 1px solid rgba(51,65,85,0.9);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .access-item-left {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .access-main {
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .access-sub {
-            color: var(--muted);
-            font-size: 0.84rem;
-        }
-
-        .small-btn {
-            border: 1px solid rgba(51,65,85,0.9);
-            background: rgba(15,23,42,0.95);
-            color: var(--text);
-            border-radius: 10px;
-            padding: 8px 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .users-list {
-            display: grid;
-            gap: 14px;
-        }
-
-        .user-card {
-            background: rgba(15,23,42,0.92);
-            border: 1px solid rgba(51,65,85,0.9);
-            border-radius: 18px;
-            padding: 16px;
-        }
-
-        .user-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .user-name {
-            font-size: 1.02rem;
-            font-weight: 800;
-            color: #e5e7eb;
-        }
-
-        .user-id {
-            display: inline-block;
-            margin-top: 6px;
-            font-size: 0.76rem;
-            color: #93c5fd;
-            border: 1px solid rgba(59,130,246,0.35);
-            padding: 5px 10px;
-            border-radius: 999px;
-        }
-
-        .user-token {
-            color: var(--muted);
-            font-size: 0.78rem;
-            font-family: monospace;
-            margin-bottom: 12px;
-            word-break: break-all;
-        }
-
-        .user-accesses {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .user-access-row {
-            display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             gap: 10px;
             flex-wrap: wrap;
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: rgba(30,41,59,0.45);
-            border: 1px solid rgba(51,65,85,0.75);
+            margin-top: 10px;
         }
 
-        .user-access-row strong {
-            color: #86efac;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .pill-green {
-            color: #dcfce7;
-            background: rgba(34,197,94,0.18);
-            border: 1px solid rgba(34,197,94,0.4);
-        }
-
-        .pill-blue {
-            color: #dbeafe;
-            background: rgba(59,130,246,0.18);
-            border: 1px solid rgba(59,130,246,0.4);
-        }
-
-        .tomas-wrap {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px 10px;
-            border-bottom: 1px solid rgba(51,65,85,0.8);
-            font-size: 0.92rem;
-        }
-
-        th {
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.76rem;
-        }
-
-        tr:hover td {
-            background: rgba(30,41,59,0.28);
-        }
-
-        .footer-note {
-            margin-top: 18px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.84rem;
-        }
-
-        @media (max-width: 1180px) {
-            .top-grid,
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .access-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .hidden {
+            display: none !important;
         }
 
         @media (max-width: 760px) {
-            .stats-grid,
-            .quick-actions,
-            .form-grid,
-            .access-grid {
-                grid-template-columns: 1fr;
+            body {
+                padding: 10px;
             }
 
-            .container {
-                padding: 12px;
+            .header,
+            .panel {
+                padding: 14px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .toolbar,
+            .user-actions,
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .btn,
+            .btn-small {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="app" style="display:none;">
         <header class="header">
-            <div class="header-top">
-                <div class="brand">
-                    <h1>MEMAC Admin Panel</h1>
-                    <p>Gestión multi-válvula por cliente y supervisión del sistema de riego</p>
-                </div>
-                <div class="admin-badge">Administrador</div>
-            </div>
+            <div class="admin-badge">👑 PANEL DE ADMINISTRACIÓN</div>
+            <h1>MEMAC · Gestión de usuarios y tomas</h1>
+            <p>Control del sistema de sectores, usuarios, asignaciones y supervisión general.</p>
         </header>
 
-        <section class="top-grid">
-            <div class="panel">
-                <div class="panel-title">Resumen del sistema</div>
-                <div class="stats-grid" id="stats-grid"></div>
-            </div>
+        <nav class="tabs">
+            <div class="tab active" data-tab="usuarios">👥 Gestión de usuarios</div>
+            <div class="tab" data-tab="tomas">🚿 Vista de tomas</div>
+            <div class="tab" data-tab="estadisticas">📊 Estadísticas</div>
+        </nav>
 
+        <section id="usuarios-tab" class="tab-content active">
             <div class="panel">
-                <div class="panel-title">Acciones rápidas</div>
-                <div class="quick-actions">
-                    <button class="btn btn-green" onclick="generarUrls()">🔗 Generar URLs</button>
-                    <button class="btn btn-blue" onclick="exportarUsuarios()">📤 Exportar Usuarios</button>
-                    <button class="btn" onclick="actualizarTomas()">🔄 Actualizar Tomas</button>
-                    <button class="btn btn-red" onclick="resetDiarios()">🗑️ Reset Diarios</button>
+                <div class="panel-title">Acciones de usuarios</div>
+                <div class="toolbar">
+                    <button class="btn btn-green" onclick="showAddUserModal()">➕ Añadir usuario</button>
+                    <button class="btn btn-blue" onclick="generateAllURLs()">🔗 Generar todas las URLs</button>
+                    <button class="btn btn-amber" onclick="exportUsers()">📤 Exportar usuarios</button>
                 </div>
+                <div id="users-grid" class="users-grid"></div>
             </div>
         </section>
 
-        <section class="main-grid">
+        <section id="tomas-tab" class="tab-content">
             <div class="panel">
-                <div class="section-header">
-                    <div>
-                        <h2>➕ Añadir / Editar Cliente</h2>
-                        <p>Un cliente puede tener varias válvulas y sectores asociados</p>
-                    </div>
+                <div class="panel-title">Supervisión de tomas</div>
+                <div class="toolbar">
+                    <button class="btn btn-blue" onclick="refreshTomas()">🔄 Actualizar tomas</button>
+                    <button class="btn btn-red" onclick="resetAllDaily()">🧯 Reset todos diarios</button>
                 </div>
-
-                <form id="user-form">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="userId">ID Cliente</label>
-                            <input type="text" id="userId" placeholder="ej: 001" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="fullName">Nombre Completo</label>
-                            <input type="text" id="fullName" placeholder="Nombre del cliente" required>
-                        </div>
-
-                        <div class="form-group full">
-                            <label for="tokenPreview">Token del cliente</label>
-                            <div class="token-preview" id="tokenPreview">Se generará automáticamente...</div>
-                        </div>
-                    </div>
-
-                    <div class="access-builder">
-                        <div class="section-header">
-                            <div>
-                                <h2>🚿 Accesos del cliente</h2>
-                                <p>Añade todos los sectores y válvulas que debe ver en su app</p>
-                            </div>
-                        </div>
-
-                        <div class="access-grid">
-                            <div class="form-group">
-                                <label for="accessSector">Sector</label>
-                                <input type="number" id="accessSector" placeholder="ej: 46">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="accessValve">Válvula</label>
-                                <select id="accessValve">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="A">Válvula A</option>
-                                    <option value="B">Válvula B</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="accessParcela">Parcela</label>
-                                <input type="text" id="accessParcela" placeholder="ej: 7 o 127/128/133">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="accessContador">Contador</label>
-                                <input type="text" id="accessContador" placeholder="ej: 503 o 504">
-                            </div>
-                        </div>
-
-                        <button type="button" class="btn btn-amber" onclick="agregarAcceso()">+ Añadir acceso</button>
-                        <div class="access-list" id="access-list"></div>
-                    </div>
-
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-                        <button type="button" class="btn" onclick="limpiarFormulario()">Cancelar</button>
-                        <button type="submit" class="btn btn-green">Guardar Cliente</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="panel">
-                <div class="section-header">
-                    <div>
-                        <h2>👥 Clientes configurados</h2>
-                        <p>Listado agrupado por cliente con sus válvulas asociadas</p>
-                    </div>
-                </div>
-
-                <div id="users-list" class="users-list"></div>
+                <div id="tomas-grid" class="tomas-grid"></div>
             </div>
         </section>
 
-        <section class="panel">
-            <div class="section-header">
-                <div>
-                    <h2>🚿 Vista global de tomas</h2>
-                    <p>Resumen operativo por sector, válvula y cliente</p>
-                </div>
+        <section id="estadisticas-tab" class="tab-content">
+            <div class="panel">
+                <div class="panel-title">Indicadores</div>
+                <div id="stats-grid" class="stats-grid"></div>
             </div>
 
-            <div class="tomas-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Sector</th>
-                            <th>Válvula</th>
-                            <th>Parcela</th>
-                            <th>Contador</th>
-                            <th>Estado</th>
-                            <th>Caudal</th>
-                            <th>Consumo Diario</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tomas-body"></tbody>
-                </table>
+            <div class="panel summary-card">
+                <h3>Resumen del sistema</h3>
+                <div id="system-summary"></div>
             </div>
         </section>
+    </div>
 
-        <div class="footer-note">
-            MEMAC Irrigation Control APP · Panel de administración multi-válvula
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Añadir usuario</div>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+
+            <form id="user-form" class="form-grid">
+                <div class="form-group">
+                    <label for="user-id">ID usuario</label>
+                    <input type="text" id="user-id" placeholder="001, 002, 051..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-name">Nombre completo</label>
+                    <input type="text" id="user-name" placeholder="Nombre del cliente" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-sector">Sector</label>
+                    <select id="user-sector" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-valve">Válvula</label>
+                    <select id="user-valve" required>
+                        <option value="">Seleccionar válvula...</option>
+                        <option value="A">Válvula A</option>
+                        <option value="B">Válvula B</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-token">Token</label>
+                    <input type="text" id="user-token" readonly>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-green">Guardar usuario</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script src="usuarios-sectores-config.js"></script>
     <script>
-        let currentUsers = JSON.parse(JSON.stringify(USUARIOS_SECTORES_CONFIG));
-        let accesosTemporales = [];
+        const ADMIN_USER = 'admin';
+        const ADMIN_TOKEN = 'admin_master_2024_secure';
+
+        let currentUsers = {};
         let editingUserId = null;
+        let tomasData = {};
 
-        function generarTokenCliente(userId) {
-            const cleanId = String(userId || '000').trim();
-            return `memac_${cleanId}_2026_secure`;
+        function getAdminURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                user: params.get('user'),
+                token: params.get('token')
+            };
         }
 
-        function actualizarPreviewToken() {
-            const userId = document.getElementById('userId').value.trim();
-            document.getElementById('tokenPreview').textContent = userId
-                ? generarTokenCliente(userId)
-                : 'Se generará automáticamente...';
+        function credencialesAdminValidas() {
+            const { user, token } = getAdminURLParams();
+            return user === ADMIN_USER && token === ADMIN_TOKEN;
         }
 
-        function renderStats() {
-            const usuarios = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
-            const totalClientes = usuarios.length;
-            const totalAccesos = usuarios.reduce((sum, [, user]) => sum + ((user.accesos || []).length), 0);
-            const sectores = new Set();
-            let valvulasA = 0;
-            let valvulasB = 0;
+        function mostrarErrorAccesoAdmin() {
+            document.body.innerHTML = `
+                <div style="
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    background: radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000 100%);
+                    color: #e5e7eb;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                ">
+                    <div style="
+                        width: 100%;
+                        max-width: 520px;
+                        background: rgba(15,23,42,0.96);
+                        border: 1px solid rgba(239,68,68,0.4);
+                        border-radius: 22px;
+                        padding: 28px 22px;
+                        box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+                        text-align: center;
+                    ">
+                        <div style="
+                            display: inline-block;
+                            padding: 8px 14px;
+                            border-radius: 999px;
+                            background: rgba(239,68,68,0.14);
+                            border: 1px solid rgba(239,68,68,0.35);
+                            color: #fecaca;
+                            font-size: 0.82rem;
+                            font-weight: 700;
+                            margin-bottom: 16px;
+                        ">
+                            Acceso denegado
+                        </div>
 
-            usuarios.forEach(([, user]) => {
-                (user.accesos || []).forEach(acceso => {
-                    sectores.add(acceso.sector);
-                    if (acceso.valve === 'A') valvulasA++;
-                    if (acceso.valve === 'B') valvulasB++;
-                });
-            });
+                        <h1 style="
+                            font-size: 1.35rem;
+                            color: #c7d2fe;
+                            margin-bottom: 10px;
+                            letter-spacing: 0.08em;
+                            text-transform: uppercase;
+                        ">
+                            Panel administrador protegido
+                        </h1>
 
-            document.getElementById('stats-grid').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-label">Clientes</div>
-                    <div class="stat-value">${totalClientes}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Accesos</div>
-                    <div class="stat-value">${totalAccesos}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Sectores Únicos</div>
-                    <div class="stat-value">${sectores.size}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Válvulas A</div>
-                    <div class="stat-value">${valvulasA}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Válvulas B</div>
-                    <div class="stat-value">${valvulasB}</div>
+                        <p style="
+                            color: #94a3b8;
+                            line-height: 1.6;
+                            margin-bottom: 20px;
+                            font-size: 0.95rem;
+                        ">
+                            Debes acceder mediante credenciales válidas de administrador.
+                        </p>
+
+                        <a href="admin.html" style="
+                            display: inline-block;
+                            text-decoration: none;
+                            color: #e5e7eb;
+                            background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(37,99,235,0.18));
+                            border: 1px solid rgba(59,130,246,0.45);
+                            border-radius: 14px;
+                            padding: 12px 16px;
+                            font-weight: 600;
+                        ">
+                            Ir a admin.html
+                        </a>
+                    </div>
                 </div>
             `;
         }
 
-        function renderAccessList() {
-            const container = document.getElementById('access-list');
-
-            if (!accesosTemporales.length) {
-                container.innerHTML = `<div class="access-item"><div class="access-item-left"><div class="access-main">Sin accesos añadidos</div><div class="access-sub">Este cliente aún no tiene sectores/válvulas cargados.</div></div></div>`;
-                return;
+        function validarAccesoAdminPanel() {
+            if (!credencialesAdminValidas()) {
+                mostrarErrorAccesoAdmin();
+                return false;
             }
-
-            container.innerHTML = accesosTemporales.map((acc, index) => `
-                <div class="access-item">
-                    <div class="access-item-left">
-                        <div class="access-main">${getSectorLabel(Number(acc.sector))} · Válvula ${acc.valve}</div>
-                        <div class="access-sub">Sector ${acc.sector} · Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}</div>
-                    </div>
-                    <button class="small-btn" onclick="eliminarAcceso(${index})">Eliminar</button>
-                </div>
-            `).join('');
+            return true;
         }
 
-        function agregarAcceso() {
-            const sector = document.getElementById('accessSector').value.trim();
-            const valve = document.getElementById('accessValve').value.trim();
-            const parcela = document.getElementById('accessParcela').value.trim();
-            const contador = document.getElementById('accessContador').value.trim();
+        function buildSectorOptions() {
+            const select = document.getElementById('user-sector');
+            const sectores = new Set();
 
-            if (!sector || !valve) {
-                alert('Debes indicar al menos sector y válvula.');
-                return;
-            }
-
-            const duplicado = accesosTemporales.some(a => String(a.sector) === String(sector) && a.valve === valve);
-            if (duplicado) {
-                alert('Ese acceso ya está añadido a este cliente.');
-                return;
-            }
-
-            accesosTemporales.push({
-                sector: Number(sector),
-                valve,
-                parcela,
-                contador,
-                hidrante: getSectorLabel(Number(sector))
+            Object.values(USUARIOS_SECTORES_CONFIG).forEach(user => {
+                if (!user.isAdmin && typeof user.sector === 'number') {
+                    sectores.add(user.sector);
+                }
             });
 
-            document.getElementById('accessSector').value = '';
-            document.getElementById('accessValve').value = '';
-            document.getElementById('accessParcela').value = '';
-            document.getElementById('accessContador').value = '';
+            const sectoresOrdenados = [...sectores].sort((a, b) => a - b);
 
-            renderAccessList();
+            select.innerHTML = '<option value="">Seleccionar sector...</option>';
+            sectoresOrdenados.forEach(sector => {
+                const option = document.createElement('option');
+                option.value = sector;
+                option.textContent = getSectorLabel(sector);
+                select.appendChild(option);
+            });
         }
 
-        function eliminarAcceso(index) {
-            accesosTemporales.splice(index, 1);
-            renderAccessList();
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === `${tabName}-tab`);
+            });
+
+            if (tabName === 'tomas') loadTomas();
+            if (tabName === 'estadisticas') loadStats();
         }
 
-        function limpiarFormulario() {
-            editingUserId = null;
-            accesosTemporales = [];
-            document.getElementById('user-form').reset();
-            document.getElementById('tokenPreview').textContent = 'Se generará automáticamente...';
-            renderAccessList();
+        function setupTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
         }
 
         function renderUsers() {
-            const container = document.getElementById('users-list');
-            const usuarios = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
+            const grid = document.getElementById('users-grid');
+            const entries = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
 
-            if (!usuarios.length) {
-                container.innerHTML = '<div class="user-card"><div class="user-name">No hay clientes cargados</div></div>';
+            if (!entries.length) {
+                grid.innerHTML = `<div class="user-card">No hay usuarios configurados.</div>`;
                 return;
             }
 
-            container.innerHTML = usuarios.map(([id, user]) => `
+            grid.innerHTML = entries.map(([userId, user]) => `
                 <div class="user-card">
-                    <div class="user-head">
+                    <div class="user-header">
                         <div>
-                            <div class="user-name">${user.name}</div>
-                            <div class="user-id">ID ${id}</div>
+                            <div class="user-name">${escapeHtml(user.name)}</div>
                         </div>
-                        <span class="pill pill-green">${(user.accesos || []).length} acceso(s)</span>
+                        <div class="user-id">ID ${userId}</div>
                     </div>
 
-                    <div class="user-token">${user.token}</div>
+                    <div class="detail-row">
+                        <span class="detail-label">Sector</span>
+                        <span>${getSectorLabel(user.sector)}</span>
+                    </div>
 
-                    <div class="user-accesses">
-                        ${(user.accesos || []).map(acc => `
-                            <div class="user-access-row">
-                                <div><strong>${getSectorLabel(Number(acc.sector))}</strong> · Válvula ${acc.valve}</div>
-                                <div>Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}</div>
-                            </div>
-                        `).join('')}
+                    <div class="detail-row">
+                        <span class="detail-label">Válvula</span>
+                        <span class="pill ${user.valve === 'A' ? 'pill-green' : 'pill-amber'}">${user.valve}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Token</span>
+                        <span class="token-preview">${escapeHtml(user.token)}</span>
                     </div>
 
                     <div class="user-actions">
-                        <button class="small-btn" onclick="editarUsuario('${id}')">Editar</button>
-                        <button class="small-btn" onclick="copiarURL('${id}')">Copiar URL</button>
-                        <button class="small-btn" onclick="eliminarUsuario('${id}')">Eliminar</button>
+                        <button class="btn btn-small btn-blue" onclick="editUser('${userId}')">Editar</button>
+                        <button class="btn btn-small btn-green" onclick="viewUserToma('${userId}')">Ver toma</button>
+                        <button class="btn btn-small btn-amber" onclick="copyUserURL('${userId}')">URL</button>
+                        <button class="btn btn-small btn-red" onclick="deleteUser('${userId}')">Eliminar</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function renderTomas() {
-            const tbody = document.getElementById('tomas-body');
-            const rows = [];
-
-            Object.entries(currentUsers).forEach(([id, user]) => {
-                if (id === 'admin') return;
-
-                (user.accesos || []).forEach(acc => {
-                    const flow = (Math.random() * 10 * 1000 / 3600).toFixed(2);
-                    const daily = (Math.random() * 50).toFixed(1);
-                    const active = Math.random() > 0.5;
-
-                    rows.push(`
-                        <tr>
-                            <td>${user.name}</td>
-                            <td>${getSectorLabel(Number(acc.sector))}</td>
-                            <td>${acc.valve}</td>
-                            <td>${acc.parcela || '-'}</td>
-                            <td>${acc.contador || '-'}</td>
-                            <td><span class="pill ${active ? 'pill-green' : 'pill-blue'}">${active ? 'Activa' : 'Reposo'}</span></td>
-                            <td>${flow} l/s</td>
-                            <td>${daily} m³</td>
-                        </tr>
-                    `);
-                });
-            });
-
-            tbody.innerHTML = rows.join('');
+        function showAddUserModal() {
+            editingUserId = null;
+            document.getElementById('modal-title').textContent = 'Añadir usuario';
+            document.getElementById('user-form').reset();
+            document.getElementById('user-id').disabled = false;
+            document.getElementById('user-token').value = '';
+            document.getElementById('user-modal').classList.add('show');
         }
 
-        function editarUsuario(userId) {
+        function editUser(userId) {
             const user = currentUsers[userId];
             if (!user) return;
 
             editingUserId = userId;
-            document.getElementById('userId').value = userId;
-            document.getElementById('fullName').value = user.name;
-            document.getElementById('tokenPreview').textContent = user.token;
-            accesosTemporales = JSON.parse(JSON.stringify(user.accesos || []));
-            renderAccessList();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('modal-title').textContent = 'Editar usuario';
+            document.getElementById('user-id').value = userId;
+            document.getElementById('user-id').disabled = true;
+            document.getElementById('user-name').value = user.name || '';
+            document.getElementById('user-sector').value = user.sector || '';
+            document.getElementById('user-valve').value = user.valve || '';
+            document.getElementById('user-token').value = user.token || '';
+            document.getElementById('user-modal').classList.add('show');
         }
 
-        function eliminarUsuario(userId) {
-            if (!confirm(`¿Eliminar el cliente ${currentUsers[userId].name}?`)) return;
-            delete currentUsers[userId];
-            renderAll();
+        function closeModal() {
+            document.getElementById('user-modal').classList.remove('show');
         }
 
-        function copiarURL(userId) {
+        function generateToken() {
+            const sector = document.getElementById('user-sector').value;
+            const valve = document.getElementById('user-valve').value;
+
+            if (sector && valve) {
+                const randomStr = Math.random().toString(36).substring(2, 8);
+                document.getElementById('user-token').value = `s${sector}${valve.toLowerCase()}_${randomStr}_2026`;
+            }
+        }
+
+        function deleteUser(userId) {
             const user = currentUsers[userId];
-            const baseURL = `${window.location.origin}${window.location.pathname.replace('admin-panel-2.html', 'index-4.html')}`;
-            const url = `${baseURL}?user=${userId}&token=${user.token}`;
+            if (!user) return;
+
+            if (!confirm(`¿Eliminar usuario ${user.name}?`)) return;
+
+            delete currentUsers[userId];
+            renderUsers();
+            loadStats();
+            saveUsersConfig();
+        }
+
+        function copyUserURL(userId) {
+            const user = currentUsers[userId];
+            if (!user) return;
+
+            const basePath = `${window.location.origin}${window.location.pathname.replace('admin-panel-2.html', 'index-4.html')}`;
+            const url = `${basePath}?user=${encodeURIComponent(userId)}&token=${encodeURIComponent(user.token)}`;
 
             navigator.clipboard.writeText(url)
                 .then(() => alert('URL copiada al portapapeles'))
                 .catch(() => alert(url));
         }
 
-        function generarUrls() {
-            const urls = generarURLsAccesoSectores();
-            console.log(urls);
-            alert('Se han generado las URLs. Revisa la consola del navegador o conecta esta acción a exportación.');
+        function viewUserToma(userId) {
+            const user = currentUsers[userId];
+            if (!user) return;
+
+            const basePath = `${window.location.origin}${window.location.pathname.replace('admin-panel-2.html', 'index-4.html')}`;
+            const url = `${basePath}?user=${encodeURIComponent(userId)}&token=${encodeURIComponent(user.token)}`;
+            window.open(url, '_blank');
         }
 
-        function exportarUsuarios() {
+        function loadTomas() {
+            tomasData = {};
+            const sectors = [...new Set(
+                Object.values(currentUsers)
+                    .filter(u => !u.isAdmin && typeof u.sector === 'number')
+                    .map(u => u.sector)
+            )].sort((a, b) => a - b);
+
+            sectors.forEach(sector => {
+                tomasData[sector] = {
+                    A: {
+                        flow: Math.random() * 12,
+                        total: Math.random() * 1200,
+                        daily: Math.random() * 60,
+                        status: Math.random() > 0.5,
+                        mode: Math.floor(Math.random() * 3),
+                        user: getUserBySectorValve(sector, 'A')
+                    },
+                    B: {
+                        flow: Math.random() * 12,
+                        total: Math.random() * 1200,
+                        daily: Math.random() * 60,
+                        status: Math.random() > 0.5,
+                        mode: Math.floor(Math.random() * 3),
+                        user: getUserBySectorValve(sector, 'B')
+                    }
+                };
+            });
+
+            renderTomas();
+        }
+
+        function getUserBySectorValve(sector, valve) {
+            const found = Object.entries(currentUsers).find(([id, u]) =>
+                id !== 'admin' && u.sector === sector && u.valve === valve
+            );
+            return found ? found[1].name : 'Sin asignar';
+        }
+
+        function getModeText(mode) {
+            switch (mode) {
+                case 0: return 'OFF';
+                case 1: return 'MANUAL';
+                case 2: return 'AUTO';
+                default: return '---';
+            }
+        }
+
+        function renderTomas() {
+            const grid = document.getElementById('tomas-grid');
+            const entries = Object.entries(tomasData);
+
+            if (!entries.length) {
+                grid.innerHTML = `<div class="toma-card">No hay tomas disponibles.</div>`;
+                return;
+            }
+
+            grid.innerHTML = entries.map(([sector, data]) => `
+                <div class="toma-card">
+                    <div class="toma-title">
+                        <strong>${getSectorLabel(Number(sector))}</strong>
+                        <button class="btn btn-small btn-blue" onclick="manageSector(${Number(sector)})">Gestionar</button>
+                    </div>
+
+                    <div class="valve-row">
+                        <div class="valve-info">
+                            <div class="status-dot ${data.A.status ? 'active' : ''}"></div>
+                            <span>Válvula A</span>
+                        </div>
+                        <div class="valve-data">
+                            ${(data.A.flow / 3.6).toFixed(2)} l/s · ${data.A.total.toFixed(1)} m³ · ${getModeText(data.A.mode)}
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Usuario A</span>
+                        <span>${escapeHtml(data.A.user)}</span>
+                    </div>
+
+                    <div class="valve-row">
+                        <div class="valve-info">
+                            <div class="status-dot ${data.B.status ? 'active' : ''}"></div>
+                            <span>Válvula B</span>
+                        </div>
+                        <div class="valve-data">
+                            ${(data.B.flow / 3.6).toFixed(2)} l/s · ${data.B.total.toFixed(1)} m³ · ${getModeText(data.B.mode)}
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Usuario B</span>
+                        <span>${escapeHtml(data.B.user)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function refreshTomas() {
+            loadTomas();
+        }
+
+        function resetAllDaily() {
+            if (!confirm('¿Seguro que quieres resetear todos los contadores diarios?')) return;
+            alert('Acción preparada. En la siguiente fase se conectará a Node-RED.');
+        }
+
+        function manageSector(sector) {
+            alert(
+                `Sector ${getSectorLabel(sector)}\n\n` +
+                `Aquí podrás:\n` +
+                `- Resetear contadores\n` +
+                `- Cambiar modo\n` +
+                `- Ver histórico\n` +
+                `- Reasignar usuarios`
+            );
+        }
+
+        function loadStats() {
+            const users = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
+            const totalUsers = users.length;
+            const sectorsWithUsers = new Set(users.map(([, u]) => u.sector)).size;
+            const valvesA = users.filter(([, u]) => u.valve === 'A').length;
+            const valvesB = users.filter(([, u]) => u.valve === 'B').length;
+
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${totalUsers}</div>
+                    <div class="stat-label">Usuarios totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${sectorsWithUsers}</div>
+                    <div class="stat-label">Sectores con usuarios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${valvesA}</div>
+                    <div class="stat-label">Válvulas A</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${valvesB}</div>
+                    <div class="stat-label">Válvulas B</div>
+                </div>
+            `;
+
+            const sectorGroups = {};
+            users.forEach(([, user]) => {
+                const sectorLabel = getSectorLabel(user.sector);
+                if (!sectorGroups[sectorLabel]) sectorGroups[sectorLabel] = [];
+                sectorGroups[sectorLabel].push(`${user.name} (${user.valve})`);
+            });
+
+            const summaryHtml = Object.keys(sectorGroups).length
+                ? `<ul>${Object.entries(sectorGroups).map(([sector, list]) => `
+                    <li><strong>${escapeHtml(sector)}:</strong> ${escapeHtml(list.join(', '))}</li>
+                `).join('')}</ul>`
+                : '<p>No hay usuarios asignados.</p>';
+
+            document.getElementById('system-summary').innerHTML = summaryHtml;
+        }
+
+        function saveUsersConfig() {
+            console.log('Configuración actualizada:', currentUsers);
+        }
+
+        function generateAllURLs() {
+            const adminQuery = `?user=${encodeURIComponent(ADMIN_USER)}&token=${encodeURIComponent(ADMIN_TOKEN)}`;
+            const target = `generador-urls-3.html${adminQuery}`;
+            window.open(target, '_blank');
+        }
+
+        function exportUsers() {
             const data = JSON.stringify(currentUsers, null, 2);
             const blob = new Blob([data], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'usuarios-sectores-config.json';
+            a.download = 'usuarios-config.json';
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
-        function actualizarTomas() {
-            renderTomas();
-            alert('Vista de tomas actualizada.');
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
 
-        function resetDiarios() {
-            if (confirm('¿Seguro que quieres resetear todos los contadores diarios?')) {
-                alert('Acción pendiente de conectar con Node-RED.');
-            }
-        }
+        document.getElementById('user-sector').addEventListener('change', generateToken);
+        document.getElementById('user-valve').addEventListener('change', generateToken);
 
-        document.getElementById('userId').addEventListener('input', actualizarPreviewToken);
-
-        document.getElementById('user-form').addEventListener('submit', (e) => {
+        document.getElementById('user-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const userId = document.getElementById('userId').value.trim();
-            const fullName = document.getElementById('fullName').value.trim();
+            const userId = document.getElementById('user-id').value.trim();
+            const name = document.getElementById('user-name').value.trim();
+            const sector = parseInt(document.getElementById('user-sector').value, 10);
+            const valve = document.getElementById('user-valve').value;
+            const token = document.getElementById('user-token').value.trim();
 
-            if (!userId || !fullName) {
-                alert('Completa el ID y el nombre del cliente.');
+            if (!userId || !name || !sector || !valve || !token) {
+                alert('Completa todos los campos.');
                 return;
             }
 
-            if (!accesosTemporales.length) {
-                alert('Debes añadir al menos un acceso para este cliente.');
+            const existing = Object.entries(currentUsers).find(([id, user]) =>
+                id !== 'admin' &&
+                id !== editingUserId &&
+                user.sector === sector &&
+                user.valve === valve
+            );
+
+            if (existing) {
+                alert(`Ya existe un usuario asignado a ${getSectorLabel(sector)} válvula ${valve}.`);
                 return;
             }
 
-            currentUsers[userId] = {
-                name: fullName,
-                token: generarTokenCliente(userId),
-                accesos: JSON.parse(JSON.stringify(accesosTemporales))
+            currentUsers[editingUserId || userId] = {
+                sector,
+                valve,
+                name,
+                token
             };
 
-            limpiarFormulario();
-            renderAll();
-            alert(editingUserId ? 'Cliente actualizado.' : 'Cliente guardado.');
+            if (editingUserId && editingUserId !== userId) {
+                delete currentUsers[editingUserId];
+            }
+
+            renderUsers();
+            loadStats();
+            closeModal();
+            saveUsersConfig();
         });
 
-        function renderAll() {
-            renderStats();
-            renderUsers();
-            renderTomas();
-        }
+        document.getElementById('user-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderAccessList();
-            renderAll();
+            if (!validarAccesoAdminPanel()) return;
+
+            currentUsers = JSON.parse(JSON.stringify(USUARIOS_SECTORES_CONFIG || {}));
+            buildSectorOptions();
+            setupTabs();
+            renderUsers();
+            loadStats();
+            document.getElementById('app').style.display = 'block';
         });
     </script>
 </body>
