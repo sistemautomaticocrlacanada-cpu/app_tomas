@@ -32,14 +32,13 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background:
-                radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000000 100%);
+            background: radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000000 100%);
             color: var(--text);
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             padding: 18px;
         }
@@ -84,11 +83,19 @@
             box-shadow: 0 10px 24px rgba(34,197,94,0.28);
         }
 
-        .top-grid {
+        .top-grid,
+        .main-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
             gap: 18px;
             margin-bottom: 18px;
+        }
+
+        .top-grid {
+            grid-template-columns: 1.2fr 0.8fr;
+        }
+
+        .main-grid {
+            grid-template-columns: 0.9fr 1.1fr;
         }
 
         .panel {
@@ -109,7 +116,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 12px;
         }
 
@@ -133,11 +140,6 @@
             font-weight: 800;
             color: var(--text);
         }
-
-        .stat-green { color: var(--green); }
-        .stat-cyan { color: var(--cyan); }
-        .stat-blue { color: #60a5fa; }
-        .stat-red { color: #f87171; }
 
         .quick-actions {
             display: grid;
@@ -177,10 +179,9 @@
             border-color: rgba(239,68,68,0.45);
         }
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 18px;
+        .btn-amber {
+            background: linear-gradient(135deg, rgba(245,158,11,0.20), rgba(120,53,15,0.18));
+            border-color: rgba(245,158,11,0.45);
         }
 
         .section-header {
@@ -254,14 +255,157 @@
             word-break: break-all;
         }
 
-        .form-actions {
-            display: flex;
+        .access-builder {
+            margin-top: 18px;
+            border-top: 1px solid rgba(51,65,85,0.8);
+            padding-top: 18px;
+        }
+
+        .access-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .access-list {
+            display: grid;
             gap: 10px;
-            margin-top: 16px;
+            margin-top: 14px;
+        }
+
+        .access-item {
+            background: rgba(15,23,42,0.88);
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
             flex-wrap: wrap;
         }
 
-        .users-table-wrap,
+        .access-item-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .access-main {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .access-sub {
+            color: var(--muted);
+            font-size: 0.84rem;
+        }
+
+        .small-btn {
+            border: 1px solid rgba(51,65,85,0.9);
+            background: rgba(15,23,42,0.95);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .users-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .user-card {
+            background: rgba(15,23,42,0.92);
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .user-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .user-name {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #e5e7eb;
+        }
+
+        .user-id {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.76rem;
+            color: #93c5fd;
+            border: 1px solid rgba(59,130,246,0.35);
+            padding: 5px 10px;
+            border-radius: 999px;
+        }
+
+        .user-token {
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-family: monospace;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+
+        .user-accesses {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .user-access-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(30,41,59,0.45);
+            border: 1px solid rgba(51,65,85,0.75);
+        }
+
+        .user-access-row strong {
+            color: #86efac;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .pill-green {
+            color: #dcfce7;
+            background: rgba(34,197,94,0.18);
+            border: 1px solid rgba(34,197,94,0.4);
+        }
+
+        .pill-blue {
+            color: #dbeafe;
+            background: rgba(59,130,246,0.18);
+            border: 1px solid rgba(59,130,246,0.4);
+        }
+
         .tomas-wrap {
             overflow-x: auto;
         }
@@ -289,56 +433,6 @@
             background: rgba(30,41,59,0.28);
         }
 
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .pill-green {
-            color: #dcfce7;
-            background: rgba(34,197,94,0.18);
-            border: 1px solid rgba(34,197,94,0.4);
-        }
-
-        .pill-blue {
-            color: #dbeafe;
-            background: rgba(59,130,246,0.18);
-            border: 1px solid rgba(59,130,246,0.4);
-        }
-
-        .pill-red {
-            color: #fee2e2;
-            background: rgba(239,68,68,0.18);
-            border: 1px solid rgba(239,68,68,0.4);
-        }
-
-        .pill-amber {
-            color: #fef3c7;
-            background: rgba(245,158,11,0.18);
-            border: 1px solid rgba(245,158,11,0.4);
-        }
-
-        .small-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .small-btn {
-            border: 1px solid rgba(51,65,85,0.9);
-            background: rgba(15,23,42,0.95);
-            color: var(--text);
-            border-radius: 10px;
-            padding: 7px 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
         .footer-note {
             margin-top: 18px;
             text-align: center;
@@ -346,26 +440,27 @@
             font-size: 0.84rem;
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1180px) {
             .top-grid,
             .main-grid {
                 grid-template-columns: 1fr;
             }
 
             .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .access-grid {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 760px) {
             .stats-grid,
+            .quick-actions,
             .form-grid,
-            .quick-actions {
+            .access-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .header-top {
-                align-items: flex-start;
             }
 
             .container {
@@ -380,7 +475,7 @@
             <div class="header-top">
                 <div class="brand">
                     <h1>MEMAC Admin Panel</h1>
-                    <p>Gestión de usuarios, tomas y supervisión del sistema de riego</p>
+                    <p>Gestión multi-válvula por cliente y supervisión del sistema de riego</p>
                 </div>
                 <div class="admin-badge">Administrador</div>
             </div>
@@ -389,24 +484,7 @@
         <section class="top-grid">
             <div class="panel">
                 <div class="panel-title">Resumen del sistema</div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">Usuarios</div>
-                        <div class="stat-value stat-green" id="stat-users">12</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Tomas activas</div>
-                        <div class="stat-value stat-cyan" id="stat-active">8</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Sectores</div>
-                        <div class="stat-value stat-blue" id="stat-sectors">15</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Alarmas</div>
-                        <div class="stat-value stat-red" id="stat-alarms">1</div>
-                    </div>
-                </div>
+                <div class="stats-grid" id="stats-grid"></div>
             </div>
 
             <div class="panel">
@@ -424,16 +502,16 @@
             <div class="panel">
                 <div class="section-header">
                     <div>
-                        <h2>➕ Añadir Usuario</h2>
-                        <p>Crear acceso por cliente, sector y válvula</p>
+                        <h2>➕ Añadir / Editar Cliente</h2>
+                        <p>Un cliente puede tener varias válvulas y sectores asociados</p>
                     </div>
                 </div>
 
                 <form id="user-form">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="userId">ID Usuario</label>
-                            <input type="text" id="userId" placeholder="ej: cliente_h1_002" required>
+                            <label for="userId">ID Cliente</label>
+                            <input type="text" id="userId" placeholder="ej: 001" required>
                         </div>
 
                         <div class="form-group">
@@ -441,46 +519,53 @@
                             <input type="text" id="fullName" placeholder="Nombre del cliente" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="sector">Sector</label>
-                            <select id="sector" required>
-                                <option value="">Seleccionar sector...</option>
-                                <option>H1 002</option>
-                                <option>H1 003</option>
-                                <option>H1 004</option>
-                                <option>H1 005</option>
-                                <option>H1 006</option>
-                                <option>H2 013</option>
-                                <option>H2 014</option>
-                                <option>H2 015</option>
-                                <option>H2 017</option>
-                                <option>H2 018</option>
-                                <option>H3 026</option>
-                                <option>H3 027</option>
-                                <option>H3 028</option>
-                                <option>H3 029</option>
-                                <option>H3 030</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="valve">Válvula</label>
-                            <select id="valve" required>
-                                <option value="">Seleccionar válvula...</option>
-                                <option value="A">Válvula A</option>
-                                <option value="B">Válvula B</option>
-                            </select>
-                        </div>
-
                         <div class="form-group full">
-                            <label for="tokenPreview">Token generado</label>
+                            <label for="tokenPreview">Token del cliente</label>
                             <div class="token-preview" id="tokenPreview">Se generará automáticamente...</div>
                         </div>
                     </div>
 
-                    <div class="form-actions">
+                    <div class="access-builder">
+                        <div class="section-header">
+                            <div>
+                                <h2>🚿 Accesos del cliente</h2>
+                                <p>Añade todos los sectores y válvulas que debe ver en su app</p>
+                            </div>
+                        </div>
+
+                        <div class="access-grid">
+                            <div class="form-group">
+                                <label for="accessSector">Sector</label>
+                                <input type="number" id="accessSector" placeholder="ej: 46">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="accessValve">Válvula</label>
+                                <select id="accessValve">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="A">Válvula A</option>
+                                    <option value="B">Válvula B</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="accessParcela">Parcela</label>
+                                <input type="text" id="accessParcela" placeholder="ej: 7 o 127/128/133">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="accessContador">Contador</label>
+                                <input type="text" id="accessContador" placeholder="ej: 503 o 504">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-amber" onclick="agregarAcceso()">+ Añadir acceso</button>
+                        <div class="access-list" id="access-list"></div>
+                    </div>
+
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
                         <button type="button" class="btn" onclick="limpiarFormulario()">Cancelar</button>
-                        <button type="submit" class="btn btn-green">Guardar Usuario</button>
+                        <button type="submit" class="btn btn-green">Guardar Cliente</button>
                     </div>
                 </form>
             </div>
@@ -488,74 +573,20 @@
             <div class="panel">
                 <div class="section-header">
                     <div>
-                        <h2>👥 Gestión de Usuarios</h2>
-                        <p>Listado de accesos configurados</p>
+                        <h2>👥 Clientes configurados</h2>
+                        <p>Listado agrupado por cliente con sus válvulas asociadas</p>
                     </div>
                 </div>
 
-                <div class="users-table-wrap">
-                    <table id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Sector</th>
-                                <th>Válvula</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            <tr>
-                                <td>cliente_h1_002</td>
-                                <td>Juan Pérez</td>
-                                <td>H1 002</td>
-                                <td>A</td>
-                                <td><span class="pill pill-green">Activo</span></td>
-                                <td>
-                                    <div class="small-actions">
-                                        <button class="small-btn">Editar</button>
-                                        <button class="small-btn">URL</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>cliente_h2_014</td>
-                                <td>María López</td>
-                                <td>H2 014</td>
-                                <td>B</td>
-                                <td><span class="pill pill-blue">Online</span></td>
-                                <td>
-                                    <div class="small-actions">
-                                        <button class="small-btn">Editar</button>
-                                        <button class="small-btn">URL</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>cliente_h3_029</td>
-                                <td>Pedro Martín</td>
-                                <td>H3 029</td>
-                                <td>A</td>
-                                <td><span class="pill pill-amber">Sin conexión</span></td>
-                                <td>
-                                    <div class="small-actions">
-                                        <button class="small-btn">Editar</button>
-                                        <button class="small-btn">URL</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div id="users-list" class="users-list"></div>
             </div>
         </section>
 
-        <section class="panel" style="margin-top: 18px;">
+        <section class="panel">
             <div class="section-header">
                 <div>
-                    <h2>🚿 Vista de Tomas</h2>
-                    <p>Estado general de sectores y válvulas</p>
+                    <h2>🚿 Vista global de tomas</h2>
+                    <p>Resumen operativo por sector, válvula y cliente</p>
                 </div>
             </div>
 
@@ -563,134 +594,314 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Cliente</th>
                             <th>Sector</th>
                             <th>Válvula</th>
+                            <th>Parcela</th>
+                            <th>Contador</th>
                             <th>Estado</th>
                             <th>Caudal</th>
                             <th>Consumo Diario</th>
-                            <th>Última Actualización</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>H1 002</td>
-                            <td>A</td>
-                            <td><span class="pill pill-green">Regando</span></td>
-                            <td>2.45 l/s</td>
-                            <td>12.4 m³</td>
-                            <td>18:10</td>
-                        </tr>
-                        <tr>
-                            <td>H2 014</td>
-                            <td>B</td>
-                            <td><span class="pill pill-blue">Automático</span></td>
-                            <td>0.00 l/s</td>
-                            <td>7.9 m³</td>
-                            <td>18:08</td>
-                        </tr>
-                        <tr>
-                            <td>H3 029</td>
-                            <td>A</td>
-                            <td><span class="pill pill-red">Alarma</span></td>
-                            <td>0.00 l/s</td>
-                            <td>0.0 m³</td>
-                            <td>17:59</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="tomas-body"></tbody>
                 </table>
             </div>
         </section>
 
         <div class="footer-note">
-            MEMAC Irrigation Control APP · Panel de administración
+            MEMAC Irrigation Control APP · Panel de administración multi-válvula
         </div>
     </div>
 
+    <script src="usuarios-sectores-config.js"></script>
     <script>
-        const userForm = document.getElementById('user-form');
-        const userId = document.getElementById('userId');
-        const fullName = document.getElementById('fullName');
-        const sector = document.getElementById('sector');
-        const valve = document.getElementById('valve');
-        const tokenPreview = document.getElementById('tokenPreview');
-        const usersTableBody = document.getElementById('usersTableBody');
+        let currentUsers = JSON.parse(JSON.stringify(USUARIOS_SECTORES_CONFIG));
+        let accesosTemporales = [];
+        let editingUserId = null;
 
-        function slugify(text) {
-            return text
-                .toString()
-                .toLowerCase()
-                .trim()
-                .replace(/\s+/g, '_')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\_\_+/g, '_');
+        function generarTokenCliente(userId) {
+            const cleanId = String(userId || '000').trim();
+            return `memac_${cleanId}_2026_secure`;
         }
 
-        function generarToken() {
-            const id = userId.value.trim() || 'usuario';
-            const sec = sector.value.trim() || 'sector';
-            const val = valve.value.trim() || 'X';
-            const token = `memac_${slugify(id)}_${slugify(sec)}_${val}_${Date.now().toString().slice(-6)}`;
-            tokenPreview.textContent = token;
-            return token;
+        function actualizarPreviewToken() {
+            const userId = document.getElementById('userId').value.trim();
+            document.getElementById('tokenPreview').textContent = userId
+                ? generarTokenCliente(userId)
+                : 'Se generará automáticamente...';
         }
 
-        userId.addEventListener('input', generarToken);
-        sector.addEventListener('change', generarToken);
-        valve.addEventListener('change', generarToken);
+        function renderStats() {
+            const usuarios = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
+            const totalClientes = usuarios.length;
+            const totalAccesos = usuarios.reduce((sum, [, user]) => sum + ((user.accesos || []).length), 0);
+            const sectores = new Set();
+            let valvulasA = 0;
+            let valvulasB = 0;
+
+            usuarios.forEach(([, user]) => {
+                (user.accesos || []).forEach(acceso => {
+                    sectores.add(acceso.sector);
+                    if (acceso.valve === 'A') valvulasA++;
+                    if (acceso.valve === 'B') valvulasB++;
+                });
+            });
+
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Clientes</div>
+                    <div class="stat-value">${totalClientes}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Accesos</div>
+                    <div class="stat-value">${totalAccesos}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sectores Únicos</div>
+                    <div class="stat-value">${sectores.size}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Válvulas A</div>
+                    <div class="stat-value">${valvulasA}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Válvulas B</div>
+                    <div class="stat-value">${valvulasB}</div>
+                </div>
+            `;
+        }
+
+        function renderAccessList() {
+            const container = document.getElementById('access-list');
+
+            if (!accesosTemporales.length) {
+                container.innerHTML = `<div class="access-item"><div class="access-item-left"><div class="access-main">Sin accesos añadidos</div><div class="access-sub">Este cliente aún no tiene sectores/válvulas cargados.</div></div></div>`;
+                return;
+            }
+
+            container.innerHTML = accesosTemporales.map((acc, index) => `
+                <div class="access-item">
+                    <div class="access-item-left">
+                        <div class="access-main">${getSectorLabel(Number(acc.sector))} · Válvula ${acc.valve}</div>
+                        <div class="access-sub">Sector ${acc.sector} · Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}</div>
+                    </div>
+                    <button class="small-btn" onclick="eliminarAcceso(${index})">Eliminar</button>
+                </div>
+            `).join('');
+        }
+
+        function agregarAcceso() {
+            const sector = document.getElementById('accessSector').value.trim();
+            const valve = document.getElementById('accessValve').value.trim();
+            const parcela = document.getElementById('accessParcela').value.trim();
+            const contador = document.getElementById('accessContador').value.trim();
+
+            if (!sector || !valve) {
+                alert('Debes indicar al menos sector y válvula.');
+                return;
+            }
+
+            const duplicado = accesosTemporales.some(a => String(a.sector) === String(sector) && a.valve === valve);
+            if (duplicado) {
+                alert('Ese acceso ya está añadido a este cliente.');
+                return;
+            }
+
+            accesosTemporales.push({
+                sector: Number(sector),
+                valve,
+                parcela,
+                contador,
+                hidrante: getSectorLabel(Number(sector))
+            });
+
+            document.getElementById('accessSector').value = '';
+            document.getElementById('accessValve').value = '';
+            document.getElementById('accessParcela').value = '';
+            document.getElementById('accessContador').value = '';
+
+            renderAccessList();
+        }
+
+        function eliminarAcceso(index) {
+            accesosTemporales.splice(index, 1);
+            renderAccessList();
+        }
 
         function limpiarFormulario() {
-            userForm.reset();
-            tokenPreview.textContent = 'Se generará automáticamente...';
+            editingUserId = null;
+            accesosTemporales = [];
+            document.getElementById('user-form').reset();
+            document.getElementById('tokenPreview').textContent = 'Se generará automáticamente...';
+            renderAccessList();
         }
 
-        userForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        function renderUsers() {
+            const container = document.getElementById('users-list');
+            const usuarios = Object.entries(currentUsers).filter(([id]) => id !== 'admin');
 
-            const token = generarToken();
+            if (!usuarios.length) {
+                container.innerHTML = '<div class="user-card"><div class="user-name">No hay clientes cargados</div></div>';
+                return;
+            }
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${userId.value}</td>
-                <td>${fullName.value}</td>
-                <td>${sector.value}</td>
-                <td>${valve.value}</td>
-                <td><span class="pill pill-green">Activo</span></td>
-                <td>
-                    <div class="small-actions">
-                        <button class="small-btn">Editar</button>
-                        <button class="small-btn">URL</button>
+            container.innerHTML = usuarios.map(([id, user]) => `
+                <div class="user-card">
+                    <div class="user-head">
+                        <div>
+                            <div class="user-name">${user.name}</div>
+                            <div class="user-id">ID ${id}</div>
+                        </div>
+                        <span class="pill pill-green">${(user.accesos || []).length} acceso(s)</span>
                     </div>
-                </td>
-            `;
-            usersTableBody.prepend(row);
 
-            alert(`Usuario guardado correctamente.\nToken generado:\n${token}`);
-            limpiarFormulario();
-            actualizarStats();
-        });
+                    <div class="user-token">${user.token}</div>
 
-        function actualizarStats() {
-            const totalUsers = usersTableBody.querySelectorAll('tr').length;
-            document.getElementById('stat-users').textContent = totalUsers;
+                    <div class="user-accesses">
+                        ${(user.accesos || []).map(acc => `
+                            <div class="user-access-row">
+                                <div><strong>${getSectorLabel(Number(acc.sector))}</strong> · Válvula ${acc.valve}</div>
+                                <div>Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="user-actions">
+                        <button class="small-btn" onclick="editarUsuario('${id}')">Editar</button>
+                        <button class="small-btn" onclick="copiarURL('${id}')">Copiar URL</button>
+                        <button class="small-btn" onclick="eliminarUsuario('${id}')">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTomas() {
+            const tbody = document.getElementById('tomas-body');
+            const rows = [];
+
+            Object.entries(currentUsers).forEach(([id, user]) => {
+                if (id === 'admin') return;
+
+                (user.accesos || []).forEach(acc => {
+                    const flow = (Math.random() * 10 * 1000 / 3600).toFixed(2);
+                    const daily = (Math.random() * 50).toFixed(1);
+                    const active = Math.random() > 0.5;
+
+                    rows.push(`
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${getSectorLabel(Number(acc.sector))}</td>
+                            <td>${acc.valve}</td>
+                            <td>${acc.parcela || '-'}</td>
+                            <td>${acc.contador || '-'}</td>
+                            <td><span class="pill ${active ? 'pill-green' : 'pill-blue'}">${active ? 'Activa' : 'Reposo'}</span></td>
+                            <td>${flow} l/s</td>
+                            <td>${daily} m³</td>
+                        </tr>
+                    `);
+                });
+            });
+
+            tbody.innerHTML = rows.join('');
+        }
+
+        function editarUsuario(userId) {
+            const user = currentUsers[userId];
+            if (!user) return;
+
+            editingUserId = userId;
+            document.getElementById('userId').value = userId;
+            document.getElementById('fullName').value = user.name;
+            document.getElementById('tokenPreview').textContent = user.token;
+            accesosTemporales = JSON.parse(JSON.stringify(user.accesos || []));
+            renderAccessList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function eliminarUsuario(userId) {
+            if (!confirm(`¿Eliminar el cliente ${currentUsers[userId].name}?`)) return;
+            delete currentUsers[userId];
+            renderAll();
+        }
+
+        function copiarURL(userId) {
+            const user = currentUsers[userId];
+            const baseURL = `${window.location.origin}${window.location.pathname.replace('admin-panel-2.html', 'index-4.html')}`;
+            const url = `${baseURL}?user=${userId}&token=${user.token}`;
+
+            navigator.clipboard.writeText(url)
+                .then(() => alert('URL copiada al portapapeles'))
+                .catch(() => alert(url));
         }
 
         function generarUrls() {
-            alert('Aquí conectaremos la generación masiva de URLs de acceso de clientes.');
+            const urls = generarURLsAccesoSectores();
+            console.log(urls);
+            alert('Se han generado las URLs. Revisa la consola del navegador o conecta esta acción a exportación.');
         }
 
         function exportarUsuarios() {
-            alert('Aquí conectaremos la exportación de usuarios a JSON o CSV.');
+            const data = JSON.stringify(currentUsers, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'usuarios-sectores-config.json';
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         function actualizarTomas() {
-            alert('Aquí conectaremos la actualización real desde Node-RED.');
+            renderTomas();
+            alert('Vista de tomas actualizada.');
         }
 
         function resetDiarios() {
             if (confirm('¿Seguro que quieres resetear todos los contadores diarios?')) {
-                alert('Acción de reset diario pendiente de conectar con Node-RED.');
+                alert('Acción pendiente de conectar con Node-RED.');
             }
         }
+
+        document.getElementById('userId').addEventListener('input', actualizarPreviewToken);
+
+        document.getElementById('user-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const userId = document.getElementById('userId').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+
+            if (!userId || !fullName) {
+                alert('Completa el ID y el nombre del cliente.');
+                return;
+            }
+
+            if (!accesosTemporales.length) {
+                alert('Debes añadir al menos un acceso para este cliente.');
+                return;
+            }
+
+            currentUsers[userId] = {
+                name: fullName,
+                token: generarTokenCliente(userId),
+                accesos: JSON.parse(JSON.stringify(accesosTemporales))
+            };
+
+            limpiarFormulario();
+            renderAll();
+            alert(editingUserId ? 'Cliente actualizado.' : 'Cliente guardado.');
+        });
+
+        function renderAll() {
+            renderStats();
+            renderUsers();
+            renderTomas();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAccessList();
+            renderAll();
+        });
     </script>
 </body>
 </html>
