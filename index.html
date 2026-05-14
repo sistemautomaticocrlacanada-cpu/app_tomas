@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1e3c72">
-    <title>Mi Sector - Sistema de Monitoreo</title>
+    <meta name="theme-color" content="#020617">
+    <title>MEMAC Irrigation Control APP</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
     <style>
@@ -409,19 +409,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚿 Mi Sector</h1>
-            <p>Monitoreo en tiempo real</p>
+            <h1>MEMAC Irrigation Control APP</h1>
+            <p>Control y visualización del sistema de riego</p>
         </div>
 
         <!-- Prompt de instalación PWA -->
         <div id="install-prompt" class="install-prompt">
-            <div>📱 ¡Instala la app en tu móvil!</div>
+            <div>📱 Instala MEMAC en tu móvil</div>
             <button id="install-btn" class="install-btn">Instalar App</button>
         </div>
 
         <!-- Configuración de conexión -->
         <div class="connection-config">
-            <label>🔗 Servidor Node-RED:</label>
+            <label>🔗 Servidor MEMAC:</label>
             <input type="text" id="node-red-url" class="config-input" 
                    placeholder="http://tu-servidor.com:1880" 
                    value="http://localhost:1880">
@@ -439,7 +439,7 @@
 
         <div id="loading" class="loading">
             <div class="loading-spinner"></div>
-            <div>Cargando datos del sector...</div>
+            <div>Cargando datos de tu instalación...</div>
         </div>
 
         <div id="error" class="error-message" style="display: none;">
