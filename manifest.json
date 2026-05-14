@@ -1,11 +1,11 @@
 {
-  "name": "Mi Sector - Sistema de Monitoreo",
-  "short_name": "Mi Sector",
-  "description": "Monitoreo en tiempo real de tu sector personal",
+  "name": "MEMAC Irrigation Control APP",
+  "short_name": "MEMAC",
+  "description": "Control y visualización del sistema de riego MEMAC",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1e3c72",
-  "theme_color": "#1e3c72",
+  "background_color": "#020617",
+  "theme_color": "#020617",
   "orientation": "portrait",
   "scope": "/",
   "lang": "es",
@@ -62,9 +62,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Ver mi sector",
-      "short_name": "Mi Sector",
-      "description": "Acceso directo a mi sector",
+      "name": "Abrir MEMAC",
+      "short_name": "MEMAC",
+      "description": "Acceso directo a MEMAC Irrigation Control APP",
       "url": "/",
       "icons": [
         {
