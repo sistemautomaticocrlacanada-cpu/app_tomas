@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de URLs - Sistema de Sectores</title>
+    <title>MEMAC · Generador de URLs</title>
+    <meta name="theme-color" content="#020617">
     <style>
         * {
             margin: 0;
@@ -11,312 +12,400 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #020617;
+            --bg-soft: #0f172a;
+            --panel: #111827;
+            --panel-2: #1e293b;
+            --line: #334155;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --green: #22c55e;
+            --green-dark: #15803d;
+            --cyan: #22d3ee;
+            --blue: #3b82f6;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --radius: 18px;
+            --shadow: 0 18px 48px rgba(0,0,0,0.35);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at top, #0b1220 0%, #020617 45%, #000000 100%);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
-            color: #333;
+            padding: 18px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1450px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
+            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(17,24,39,0.98));
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 18px;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 1.55rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #a5b4fc;
+            margin-bottom: 8px;
         }
 
-        .content {
-            padding: 30px;
+        .header p {
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
-        .config-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
+        .panel {
+            background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+            margin-bottom: 18px;
+        }
+
+        .panel-title {
+            font-size: 0.95rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 14px;
+        }
+
+        .config-grid,
+        .stats-grid,
+        .filter-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .config-grid {
+            grid-template-columns: 1.4fr auto auto;
+            align-items: end;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .filter-grid {
+            grid-template-columns: 1.2fr 1fr 1fr;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
+        label {
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
 
-        .form-group input {
+        input, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+            background: rgba(15,23,42,0.95);
+            color: var(--text);
+            border: 1px solid rgba(51,65,85,0.95);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.95rem;
+            outline: none;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
+        input:focus, select:focus {
+            border-color: rgba(59,130,246,0.95);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            border: 1px solid rgba(51,65,85,0.9);
+            background: linear-gradient(180deg, rgba(30,41,59,0.95), rgba(15,23,42,0.98));
+            color: var(--text);
+            border-radius: 14px;
+            padding: 12px 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+            white-space: nowrap;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: translateY(-1px);
+            border-color: rgba(59,130,246,0.9);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        .btn-green {
+            background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(21,128,61,0.18));
+            border-color: rgba(34,197,94,0.5);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        .btn-blue {
+            background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(37,99,235,0.18));
+            border-color: rgba(59,130,246,0.5);
+        }
+
+        .btn-amber {
+            background: linear-gradient(135deg, rgba(245,158,11,0.20), rgba(120,53,15,0.18));
+            border-color: rgba(245,158,11,0.45);
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            border-radius: 10px;
+        }
+
+        .stat-card {
+            background: rgba(15,23,42,0.92);
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .export-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .urls-container {
-            margin-top: 30px;
+            display: grid;
+            gap: 14px;
         }
 
         .url-card {
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
+            background: rgba(15,23,42,0.95);
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 18px;
+            padding: 16px;
         }
 
-        .url-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
-        }
-
-        .url-header {
+        .url-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .user-info {
-            font-weight: 600;
-            color: #333;
+        .user-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text);
         }
 
-        .sector-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        .user-meta {
+            margin-top: 6px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .valve-badge {
-            background: linear-gradient(135deg, #34C759 0%, #28A745 100%);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 5px;
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .pill-blue {
+            color: #dbeafe;
+            background: rgba(59,130,246,0.18);
+            border: 1px solid rgba(59,130,246,0.4);
+        }
+
+        .pill-green {
+            color: #dcfce7;
+            background: rgba(34,197,94,0.18);
+            border: 1px solid rgba(34,197,94,0.4);
+        }
+
+        .pill-amber {
+            color: #fde68a;
+            background: rgba(245,158,11,0.18);
+            border: 1px solid rgba(245,158,11,0.4);
         }
 
         .url-display {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+            background: rgba(2,6,23,0.9);
+            border: 1px solid rgba(51,65,85,0.9);
+            border-radius: 12px;
             padding: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
+            color: #93c5fd;
+            font-family: monospace;
+            font-size: 0.9rem;
             word-break: break-all;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .url-actions {
             display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .accesses-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .access-row {
+            display: flex;
+            justify-content: space-between;
             gap: 10px;
             flex-wrap: wrap;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(30,41,59,0.45);
+            border: 1px solid rgba(51,65,85,0.75);
         }
 
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 12px;
+        .access-row strong {
+            color: #86efac;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+        .empty-state {
             text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .filter-section {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-input {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .export-section {
-            background: #e8f5e8;
-            border: 2px solid #28a745;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
+            padding: 30px 20px;
+            color: var(--muted);
+            border: 1px dashed rgba(51,65,85,0.9);
+            border-radius: 16px;
+            background: rgba(15,23,42,0.6);
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
-        @media (max-width: 768px) {
-            .url-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .url-actions {
-                flex-direction: column;
+            .config-grid,
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
-            .filter-section {
-                flex-direction: column;
+            body {
+                padding: 10px;
+            }
+
+            .header,
+            .panel {
+                padding: 14px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🔗 Generador de URLs</h1>
-            <p>Sistema de Acceso Individual a Sectores</p>
-        </div>
+        <header class="header">
+            <h1>MEMAC · Generador de URLs</h1>
+            <p>Generación y exportación de accesos para clientes multi-válvula</p>
+        </header>
 
-        <div class="content">
-            <!-- Configuración -->
-            <div class="config-section">
-                <h3>⚙️ Configuración del Servidor</h3>
+        <section class="panel">
+            <div class="panel-title">Configuración del servidor</div>
+            <div class="config-grid">
                 <div class="form-group">
-                    <label for="base-url">URL Base del Servidor:</label>
-                    <input type="text" id="base-url" value="http://localhost:1880/sector" 
-                           placeholder="http://tu-servidor.com/sector">
+                    <label for="base-url">URL base de la app cliente</label>
+                    <input type="text" id="base-url" value="http://localhost:1880/index-4.html" placeholder="https://tu-dominio.com/index-4.html">
                 </div>
-                <button class="btn" onclick="generarURLs()">🔄 Generar URLs</button>
-                <button class="btn btn-secondary" onclick="limpiarResultados()">🗑️ Limpiar</button>
+                <button class="btn btn-green" onclick="generarURLs()">🔗 Generar URLs</button>
+                <button class="btn" onclick="limpiarResultados()">Limpiar</button>
             </div>
+        </section>
 
-            <!-- Estadísticas -->
-            <div class="stats hidden" id="stats-section">
-                <div class="stat-card">
-                    <div class="stat-number" id="total-usuarios">0</div>
-                    <div class="stat-label">Total Usuarios</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="total-sectores">0</div>
-                    <div class="stat-label">Sectores Únicos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="valvulas-a">0</div>
-                    <div class="stat-label">Válvulas A</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="valvulas-b">0</div>
-                    <div class="stat-label">Válvulas B</div>
-                </div>
-            </div>
+        <section id="stats-section" class="panel hidden">
+            <div class="panel-title">Resumen generado</div>
+            <div class="stats-grid" id="stats-grid"></div>
+        </section>
 
-            <!-- Filtros -->
-            <div class="filter-section hidden" id="filter-section">
-                <div class="filter-input">
-                    <input type="text" id="search-user" placeholder="🔍 Buscar por nombre de usuario..." 
-                           onkeyup="filtrarUsuarios()">
+        <section id="filter-section" class="panel hidden">
+            <div class="panel-title">Filtros</div>
+            <div class="filter-grid">
+                <div class="form-group">
+                    <label for="search-user">Buscar cliente</label>
+                    <input type="text" id="search-user" placeholder="Nombre o ID..." onkeyup="filtrarUsuarios()">
                 </div>
-                <div class="filter-input">
+
+                <div class="form-group">
+                    <label for="filter-sector">Sector</label>
                     <select id="filter-sector" onchange="filtrarUsuarios()">
-                        <option value="">🚿 Todos los sectores</option>
+                        <option value="">Todos los sectores</option>
                     </select>
                 </div>
-                <div class="filter-input">
+
+                <div class="form-group">
+                    <label for="filter-valve">Válvula</label>
                     <select id="filter-valve" onchange="filtrarUsuarios()">
-                        <option value="">⚡ Todas las válvulas</option>
+                        <option value="">Todas las válvulas</option>
                         <option value="A">Válvula A</option>
                         <option value="B">Válvula B</option>
                     </select>
                 </div>
             </div>
+        </section>
 
-            <!-- Acciones de exportación -->
-            <div class="export-section hidden" id="export-section">
-                <h4>📤 Exportar URLs</h4>
-                <p>Descarga las URLs en diferentes formatos para distribuir a los usuarios:</p>
-                <div style="margin-top: 15px;">
-                    <button class="btn btn-success" onclick="exportarCSV()">📊 Exportar CSV</button>
-                    <button class="btn btn-success" onclick="exportarTXT()">📄 Exportar TXT</button>
-                    <button class="btn btn-success" onclick="exportarJSON()">🔧 Exportar JSON</button>
-                    <button class="btn" onclick="copiarTodasURLs()">📋 Copiar Todas</button>
+        <section id="export-section" class="panel hidden">
+            <div class="panel-title">Exportación</div>
+            <div class="export-actions">
+                <button class="btn btn-blue" onclick="exportarCSV()">Exportar CSV</button>
+                <button class="btn btn-blue" onclick="exportarTXT()">Exportar TXT</button>
+                <button class="btn btn-blue" onclick="exportarJSON()">Exportar JSON</button>
+                <button class="btn btn-amber" onclick="copiarTodasURLs()">Copiar todas</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title">Clientes y enlaces</div>
+            <div id="urls-container" class="urls-container">
+                <div class="empty-state">
+                    Genera las URLs para visualizar aquí los enlaces de acceso de cada cliente.
                 </div>
             </div>
-
-            <!-- Contenedor de URLs -->
-            <div class="urls-container" id="urls-container"></div>
-        </div>
+        </section>
     </div>
 
     <script src="usuarios-sectores-config.js"></script>
@@ -324,223 +413,276 @@
         let urlsGeneradas = {};
         let urlsFiltradas = {};
 
+        function normalizarBaseURL(baseURL) {
+            const clean = baseURL.trim();
+            if (!clean) return '';
+            return clean;
+        }
+
         function generarURLs() {
-            const baseURL = document.getElementById('base-url').value.trim();
-            
+            const baseURL = normalizarBaseURL(document.getElementById('base-url').value);
+
             if (!baseURL) {
-                alert('Por favor, introduce la URL base del servidor');
+                alert('Por favor, introduce la URL base de la app.');
                 return;
             }
 
-            // Generar URLs usando la configuración de sectores
             urlsGeneradas = generarURLsAccesoSectores(baseURL);
             urlsFiltradas = { ...urlsGeneradas };
-            
-            // Mostrar estadísticas
+
             mostrarEstadisticas();
-            
-            // Configurar filtros
             configurarFiltros();
-            
-            // Mostrar URLs
             mostrarURLs();
-            
-            // Mostrar secciones ocultas
+
             document.getElementById('stats-section').classList.remove('hidden');
             document.getElementById('filter-section').classList.remove('hidden');
             document.getElementById('export-section').classList.remove('hidden');
         }
 
         function mostrarEstadisticas() {
-            const stats = obtenerEstadisticasSistema();
-            
-            document.getElementById('total-usuarios').textContent = stats.totalUsuarios;
-            document.getElementById('total-sectores').textContent = stats.sectoresUnicos;
-            document.getElementById('valvulas-a').textContent = stats.usuariosValvulaA;
-            document.getElementById('valvulas-b').textContent = stats.usuariosValvulaB;
+            const usuarios = Object.entries(USUARIOS_SECTORES_CONFIG).filter(([id]) => id !== 'admin');
+            const totalClientes = usuarios.length;
+            const totalAccesos = usuarios.reduce((sum, [, cfg]) => sum + ((cfg.accesos || []).length), 0);
+
+            const sectores = new Set();
+            let valvulasA = 0;
+            let valvulasB = 0;
+
+            usuarios.forEach(([, cfg]) => {
+                (cfg.accesos || []).forEach(acc => {
+                    sectores.add(acc.sector);
+                    if (acc.valve === 'A') valvulasA++;
+                    if (acc.valve === 'B') valvulasB++;
+                });
+            });
+
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Clientes</div>
+                    <div class="stat-value">${totalClientes}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">URLs generadas</div>
+                    <div class="stat-value">${Object.keys(urlsGeneradas).filter(id => id !== 'admin').length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Accesos totales</div>
+                    <div class="stat-value">${totalAccesos}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sectores únicos</div>
+                    <div class="stat-value">${sectores.size}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">A / B</div>
+                    <div class="stat-value">${valvulasA} / ${valvulasB}</div>
+                </div>
+            `;
         }
 
         function configurarFiltros() {
             const selectSector = document.getElementById('filter-sector');
-            const sectoresUnicos = [...new Set(Object.values(USUARIOS_SECTORES_CONFIG).map(u => u.sector))].sort((a, b) => a - b);
-            
-            // Limpiar opciones existentes (excepto la primera)
-            selectSector.innerHTML = '<option value="">🚿 Todos los sectores</option>';
-            
-            sectoresUnicos.forEach(sector => {
+            const sectoresUnicos = new Set();
+
+            Object.entries(USUARIOS_SECTORES_CONFIG).forEach(([id, cfg]) => {
+                if (id === 'admin') return;
+                (cfg.accesos || []).forEach(acc => sectoresUnicos.add(Number(acc.sector)));
+            });
+
+            const sectoresOrdenados = [...sectoresUnicos].sort((a, b) => a - b);
+            selectSector.innerHTML = '<option value="">Todos los sectores</option>';
+
+            sectoresOrdenados.forEach(sector => {
                 const option = document.createElement('option');
                 option.value = sector;
-                const sectorLabel = getSectorLabel(sector);
-                option.textContent = `${sectorLabel}`;
+                option.textContent = getSectorLabel(sector);
                 selectSector.appendChild(option);
             });
         }
 
+        function usuarioCoincideFiltro(usuario, searchTerm, sectorFilter, valveFilter) {
+            const nombreMatch =
+                usuario.usuario.toLowerCase().includes(searchTerm) ||
+                usuario.id.toLowerCase().includes(searchTerm);
+
+            const accesos = usuario.accesos || [];
+
+            const sectorMatch = !sectorFilter || accesos.some(acc => String(acc.sector) === String(sectorFilter));
+            const valveMatch = !valveFilter || accesos.some(acc => acc.valve === valveFilter);
+
+            return nombreMatch && sectorMatch && valveMatch;
+        }
+
         function filtrarUsuarios() {
-            const searchTerm = document.getElementById('search-user').value.toLowerCase();
+            const searchTerm = document.getElementById('search-user').value.toLowerCase().trim();
             const sectorFilter = document.getElementById('filter-sector').value;
             const valveFilter = document.getElementById('filter-valve').value;
-            
+
             urlsFiltradas = {};
-            
+
             for (const [userId, urlData] of Object.entries(urlsGeneradas)) {
-                const usuario = USUARIOS_SECTORES_CONFIG[userId];
-                const nombreMatch = usuario.name.toLowerCase().includes(searchTerm) || userId.includes(searchTerm);
-                const sectorMatch = !sectorFilter || usuario.sector.toString() === sectorFilter;
-                const valveMatch = !valveFilter || usuario.valve === valveFilter;
-                
-                if (nombreMatch && sectorMatch && valveMatch) {
+                const registro = {
+                    id: userId,
+                    usuario: urlData.usuario,
+                    accesos: urlData.accesos || []
+                };
+
+                if (userId === 'admin') continue;
+                if (usuarioCoincideFiltro(registro, searchTerm, sectorFilter, valveFilter)) {
                     urlsFiltradas[userId] = urlData;
                 }
             }
-            
+
             mostrarURLs();
         }
 
         function mostrarURLs() {
             const container = document.getElementById('urls-container');
-            
-            if (Object.keys(urlsFiltradas).length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No se encontraron usuarios que coincidan con los filtros.</div>';
+            const items = Object.entries(urlsFiltradas).filter(([id]) => id !== 'admin');
+
+            if (!items.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        No se encontraron clientes que coincidan con los filtros seleccionados.
+                    </div>
+                `;
                 return;
             }
-            
-            let html = '';
-            
-            for (const [userId, urlData] of Object.entries(urlsFiltradas)) {
-                const isAdmin = userId === 'admin';
-                const adminBadge = isAdmin ? '<span style="background: #FF6B35; color: white; padding: 3px 8px; border-radius: 10px; font-size: 10px; margin-left: 5px;">👑 ADMIN</span>' : '';
-                
-                html += `
+
+            container.innerHTML = items.map(([userId, urlData]) => {
+                const accesosHtml = (urlData.accesos || []).map(acc => `
+                    <div class="access-row">
+                        <div><strong>${getSectorLabel(Number(acc.sector))}</strong> · Válvula ${acc.valve}</div>
+                        <div>Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}</div>
+                    </div>
+                `).join('');
+
+                return `
                     <div class="url-card">
-                        <div class="url-header">
-                            <div class="user-info">
-                                👤 ${urlData.usuario} (ID: ${userId}) ${adminBadge}
-                            </div>
+                        <div class="url-card-header">
                             <div>
-                                <span class="sector-badge">
-                                    ${isAdmin ? 'TODOS LOS SECTORES' : urlData.sectorLabel}
-                                </span>
-                                ${!isAdmin ? `<span class="valve-badge">Válvula ${urlData.valve}</span>` : ''}
+                                <div class="user-title">${urlData.usuario}</div>
+                                <div class="user-meta">
+                                    <span class="pill pill-blue">ID ${userId}</span>
+                                    <span class="pill pill-green">${urlData.totalAccesos || 0} acceso(s)</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="url-display" id="url-${userId}">
-                            ${urlData.url}
-                        </div>
+
+                        <div class="url-display" id="url-${userId}">${urlData.url}</div>
+
                         <div class="url-actions">
-                            <button class="btn btn-small" onclick="copiarURL('${userId}')">📋 Copiar</button>
-                            <button class="btn btn-small btn-secondary" onclick="abrirURL('${urlData.url}')">🔗 Abrir</button>
-                            <button class="btn btn-small btn-success" onclick="enviarPorEmail('${urlData.usuario}', '${urlData.url}', '${urlData.sectorLabel}', '${urlData.valve}')">📧 Email</button>
+                            <button class="btn btn-small" onclick="copiarURL('${userId}')">Copiar</button>
+                            <button class="btn btn-small btn-blue" onclick="abrirURL('${urlData.url}')">Abrir</button>
+                            <button class="btn btn-small btn-amber" onclick="enviarPorEmail('${escapeJs(urlData.usuario)}','${escapeJs(urlData.url)}')">Email</button>
+                        </div>
+
+                        <div class="accesses-grid">
+                            ${accesosHtml}
                         </div>
                     </div>
                 `;
-            }
-            
-            container.innerHTML = html;
+            }).join('');
         }
 
         function copiarURL(userId) {
-            const urlElement = document.getElementById(`url-${userId}`);
-            const url = urlElement.textContent.trim();
-            
-            navigator.clipboard.writeText(url).then(() => {
-                // Feedback visual
-                const originalBg = urlElement.style.backgroundColor;
-                urlElement.style.backgroundColor = '#d4edda';
-                urlElement.style.transition = 'background-color 0.3s ease';
-                
-                setTimeout(() => {
-                    urlElement.style.backgroundColor = originalBg;
-                }, 1000);
-                
-                console.log('URL copiada:', url);
-            }).catch(err => {
-                console.error('Error al copiar URL:', err);
-                alert('Error al copiar la URL');
-            });
+            const url = document.getElementById(`url-${userId}`).textContent.trim();
+
+            navigator.clipboard.writeText(url)
+                .then(() => alert('URL copiada al portapapeles'))
+                .catch(() => alert(url));
         }
 
         function abrirURL(url) {
             window.open(url, '_blank');
         }
 
-        function enviarPorEmail(usuario, url, sectorLabel, valve) {
-            const subject = encodeURIComponent(`Acceso a tu Sector - ${usuario}`);
-            const body = encodeURIComponent(`Hola ${usuario},
+        function enviarPorEmail(usuario, url) {
+            const subject = encodeURIComponent(`Acceso a tu app de riego - ${usuario}`);
+            const body = encodeURIComponent(
+                `Hola ${usuario},\n\n` +
+                `Tu enlace personal de acceso al sistema de riego es:\n\n${url}\n\n` +
+                `Desde esta app podrás ver tus sectores, válvulas, consumos y estado del riego.\n\n` +
+                `Importante: no compartas este enlace con otras personas.\n\n` +
+                `Saludos.`
+            );
 
-Tu enlace de acceso personal al sistema de monitoreo de sectores es:
-
-${url}
-
-Detalles de tu acceso:
-- Sector: ${sectorLabel}
-- Válvula: ${valve}
-
-Instrucciones:
-1. Haz clic en el enlace o cópialo en tu navegador móvil
-2. Si aparece "Instalar App", tócalo para añadirla a tu pantalla de inicio
-3. Podrás ver en tiempo real el estado de tu sector y válvula
-4. Consultar consumos diarios y totales
-5. Resetear contadores cuando sea necesario
-
-¡Importante! No compartas este enlace con otras personas, es exclusivo para ti.
-
-Saludos,
-Equipo de Gestión de Sectores`);
-            
-            const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
-            window.location.href = mailtoLink;
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
         }
 
         function copiarTodasURLs() {
-            let texto = 'URLS DE ACCESO - SISTEMA DE SECTORES\n';
-            texto += '='.repeat(50) + '\n\n';
-            
-            for (const [userId, urlData] of Object.entries(urlsFiltradas)) {
-                texto += `Usuario: ${urlData.usuario} (ID: ${userId})\n`;
-                texto += `Sector: ${urlData.sectorLabel}\n`;
-                texto += `Válvula: ${urlData.valve}\n`;
-                texto += `URL: ${urlData.url}\n`;
-                texto += '-'.repeat(30) + '\n';
+            const items = Object.entries(urlsFiltradas).filter(([id]) => id !== 'admin');
+
+            if (!items.length) {
+                alert('No hay URLs filtradas para copiar.');
+                return;
             }
-            
-            navigator.clipboard.writeText(texto).then(() => {
-                alert(`${Object.keys(urlsFiltradas).length} URLs copiadas al portapapeles`);
-            }).catch(err => {
-                console.error('Error al copiar URLs:', err);
-                alert('Error al copiar las URLs');
+
+            let texto = 'MEMAC - URLS DE ACCESO\n';
+            texto += '='.repeat(50) + '\n\n';
+
+            items.forEach(([userId, data]) => {
+                texto += `Cliente: ${data.usuario}\n`;
+                texto += `ID: ${userId}\n`;
+                texto += `URL: ${data.url}\n`;
+                texto += `Accesos:\n`;
+
+                (data.accesos || []).forEach(acc => {
+                    texto += ` - ${getSectorLabel(Number(acc.sector))} · Válvula ${acc.valve} · Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}\n`;
+                });
+
+                texto += '\n' + '-'.repeat(50) + '\n\n';
             });
+
+            navigator.clipboard.writeText(texto)
+                .then(() => alert(`${items.length} URL(s) copiadas al portapapeles`))
+                .catch(() => alert('No se pudieron copiar las URLs.'));
         }
 
         function exportarCSV() {
-            let csv = 'ID_Usuario,Nombre,Sector,SectorLabel,Valve,URL\n';
-            
-            for (const [userId, urlData] of Object.entries(urlsFiltradas)) {
-                csv += `"${userId}","${urlData.usuario}","${urlData.sector}","${urlData.sectorLabel}","${urlData.valve}","${urlData.url}"\n`;
-            }
-            
-            descargarArchivo(csv, 'urls-sectores.csv', 'text/csv');
+            const items = Object.entries(urlsFiltradas).filter(([id]) => id !== 'admin');
+            let csv = 'ID,Nombre,URL,TotalAccesos,Sector,Valve,Parcela,Contador\n';
+
+            items.forEach(([userId, data]) => {
+                (data.accesos || []).forEach(acc => {
+                    csv += `"${userId}","${data.usuario}","${data.url}","${data.totalAccesos || 0}","${acc.sector}","${acc.valve}","${acc.parcela || ''}","${acc.contador || ''}"\n`;
+                });
+            });
+
+            descargarArchivo(csv, 'memac-urls-clientes.csv', 'text/csv');
         }
 
         function exportarTXT() {
-            let txt = 'SISTEMA DE SECTORES - URLS DE ACCESO\n';
+            const items = Object.entries(urlsFiltradas).filter(([id]) => id !== 'admin');
+            let txt = 'MEMAC - URLS DE ACCESO\n';
             txt += '='.repeat(50) + '\n\n';
-            
-            for (const [userId, urlData] of Object.entries(urlsFiltradas)) {
+
+            items.forEach(([userId, data]) => {
+                txt += `Cliente: ${data.usuario}\n`;
                 txt += `ID: ${userId}\n`;
-                txt += `Usuario: ${urlData.usuario}\n`;
-                txt += `Sector: ${urlData.sectorLabel}\n`;
-                txt += `Válvula: ${urlData.valve}\n`;
-                txt += `URL: ${urlData.url}\n`;
-                txt += '\n' + '-'.repeat(50) + '\n\n';
-            }
-            
-            descargarArchivo(txt, 'urls-sectores.txt', 'text/plain');
+                txt += `URL: ${data.url}\n`;
+                txt += `Accesos:\n`;
+
+                (data.accesos || []).forEach(acc => {
+                    txt += ` * ${getSectorLabel(Number(acc.sector))} · Válvula ${acc.valve} · Parcela ${acc.parcela || '-'} · Contador ${acc.contador || '-'}\n`;
+                });
+
+                txt += '\n';
+            });
+
+            descargarArchivo(txt, 'memac-urls-clientes.txt', 'text/plain');
         }
 
         function exportarJSON() {
-            const json = JSON.stringify(urlsFiltradas, null, 2);
-            descargarArchivo(json, 'urls-sectores.json', 'application/json');
+            const items = Object.fromEntries(
+                Object.entries(urlsFiltradas).filter(([id]) => id !== 'admin')
+            );
+
+            descargarArchivo(
+                JSON.stringify(items, null, 2),
+                'memac-urls-clientes.json',
+                'application/json'
+            );
         }
 
         function descargarArchivo(contenido, nombreArchivo, tipoMIME) {
@@ -556,22 +698,31 @@ Equipo de Gestión de Sectores`);
         }
 
         function limpiarResultados() {
-            document.getElementById('urls-container').innerHTML = '';
+            urlsGeneradas = {};
+            urlsFiltradas = {};
             document.getElementById('stats-section').classList.add('hidden');
             document.getElementById('filter-section').classList.add('hidden');
             document.getElementById('export-section').classList.add('hidden');
             document.getElementById('search-user').value = '';
-            document.getElementById('filter-sector').value = '';
+            document.getElementById('filter-sector').innerHTML = '<option value="">Todos los sectores</option>';
             document.getElementById('filter-valve').value = '';
-            urlsGeneradas = {};
-            urlsFiltradas = {};
+            document.getElementById('urls-container').innerHTML = `
+                <div class="empty-state">
+                    Genera las URLs para visualizar aquí los enlaces de acceso de cada cliente.
+                </div>
+            `;
         }
 
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar URL base por defecto
-            const baseURL = window.location.origin + '/sector';
-            document.getElementById('base-url').value = baseURL;
+        function escapeJs(value) {
+            return String(value)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '&quot;');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const pathBase = `${window.location.origin}${window.location.pathname.replace('generador-urls-3.html', 'index-4.html')}`;
+            document.getElementById('base-url').value = pathBase;
         });
     </script>
 </body>
