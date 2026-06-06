@@ -391,6 +391,14 @@ const USUARIOS_SECTORES_CONFIG = {
         accesos: [
             { sector: 140, valve: 'A', contador: '503', parcela: '11', hidrante: getSectorLabel(140) }
         ]
+    },
+
+    '107B': {
+        name: 'SANTIAGO FERRANDEZ DE TORRES (107B)',
+        token: 'memac_107b_2026_secure',
+        accesos: [
+            { sector: 107, valve: 'B', contador: '503', parcela: '92', hidrante: getSectorLabel(107) }
+        ]
     }
 };
 
